@@ -1,5 +1,5 @@
 # Host
-- `git clone`
+- `git clone https://github.com/fredeerock/foreman`
 - `cd foreman`
 - `cd master`
 - `vagrant up`
