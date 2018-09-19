@@ -2,7 +2,7 @@
 - `git clone`
 - `cd foreman`
 - `cd master`
-- `vagrant up
+- `vagrant up`
 - `cd ../nodes/`
 - `vagrant up`
 - `sudo echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts`
@@ -41,7 +41,7 @@ sudo firewall-cmd --reload`
 
 - `sudo /opt/puppetlabs/bin/puppet agent --test`
 
-Nodes
+# Nodes
 - `cd master`
 - `vagrant ssh`
 - `sudo yum update -y`
