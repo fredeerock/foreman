@@ -5,8 +5,8 @@
 - `vagrant up`
 - `cd ../nodes/`
 - `vagrant up`
-- `sudo echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts`
-- `sudo echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts`
+- `echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts`
+- `echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts`
 
 # Foreman
 - `cd master`
