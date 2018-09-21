@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
 # This script sets up Foreman Master with DHCP, DNS, and PXE. 
 # It assumes a development environment with no FQDN on master or node1.
@@ -53,8 +53,8 @@ sudo foreman-installer \
 --foreman-proxy-dns-forwarders="8.8.8.8; 4.4.4.4" \
 --foreman-proxy-dns-server "192.168.33.10" \
 --enable-foreman-plugin-discovery \
---foreman-plugin-discovery-source-url=http://downloads.theforeman.org/discovery/releases/3.4/ \
---foreman-plugin-discovery-install-images=true
+--enable-foreman-proxy-plugin-discovery \
+--foreman-proxy-plugin-discovery-install-images=true
 
 # Initialize Node
 sudo /opt/puppetlabs/bin/puppet agent --test

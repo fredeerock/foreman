@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
 # This script is useful for connecting a node already running an OS to Foreman Master. 
 
