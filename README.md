@@ -82,6 +82,7 @@ vagrant up
       - PXE Loader: PXELinux BIOS
       - Root Pass: changeme
 9. **Hosts > Provisioning Templates > Build PXE Default**
+10. May have to change proxy_url in kernel options on new host to IP instead of hostname if DNS isn't functional.
 
 Boot a node with DHCP to provision with Foreman using PXE. *Make sure private network name (ex: vboxnet42) matchs in Vagrantfile.* 
 ```bash
