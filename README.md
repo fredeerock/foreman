@@ -1,61 +1,41 @@
 # Host
-- `git clone https://github.com/fredeerock/foreman`
-- `cd foreman`
-- `cd master`
-- `vagrant up`
-- `cd ../nodes/`
-- `vagrant up`
-- `echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts`
-- `echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts`
+Install Vagrant and VirtualBox.
 
-# Foreman
-- `cd master`
-- `vagrant ssh`
-- `sudo yum update -y`
+```bash
+brew cask install virtualbox
+brew cask install vagrant
+```
 
-- `sudo hostnamectl set-hostname foreman.example.com`
-- `echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts`
-- `echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts`
+If you don't have FQDN on Foreman Master or a test node use the following on your host machine.
 
-- `sudo systemctl start firewalld && \
-sudo systemctl enable firewalld && \
-sudo firewall-cmd --permanent --add-service=http && \
-sudo firewall-cmd --permanent --add-service=https && \
-sudo firewall-cmd --permanent --add-port=69/tcp && \
-sudo firewall-cmd --permanent --add-port=67-69/udp && \
-sudo firewall-cmd --permanent --add-port=53/tcp && \
-sudo firewall-cmd --permanent --add-port=53/udp && \
-sudo firewall-cmd --permanent --add-port=3000/tcp && \
-sudo firewall-cmd --permanent --add-port=3306/tcp && \
-sudo firewall-cmd --permanent --add-port=5910-5930/tcp && \
-sudo firewall-cmd --permanent --add-port=5432/tcp && \
-sudo firewall-cmd --permanent --add-port=8140/tcp && \
-sudo firewall-cmd --permanent --add-port=8443/tcp && \
-sudo firewall-cmd --reload`
+```bash
+echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
+echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
+```
 
-- `sudo yum -y install https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm`
-- `sudo yum -y install http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm`
-- `sudo yum -y install https://yum.theforeman.org/releases/1.19/el7/x86_64/foreman-release.rpm`
-- `sudo yum -y install foreman-installer`
-- `sudo foreman-installer`
+Clone the repo and use Vagrant
 
-- `sudo /opt/puppetlabs/bin/puppet agent --test`
+```bash
+git clone https://github.com/fredeerock/foreman
+cd foreman
+cd master
+vagrant up
+cd ..
 
-# Nodes
-- `cd master`
-- `vagrant ssh`
-- `sudo yum update -y`
+# For a node with OS and static IP use: 
+cd node1
+vagrant up
 
-- `sudo hostnamectl set-hostname node1.example.com`
-- `echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts`
-- `echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts`
+# For a node without OS and DHCP to PXE boot use: 
+cd node2
+vagrant up
+```
 
-- `sudo rpm -Uvh https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm`
-- `sudo yum -y install puppet-agent`
+# Notes
 
-- `echo "server = foreman.example.com" | sudo tee -a /etc/puppetlabs/puppet/puppet.conf`
-- `echo "runinterval = 120s" | sudo tee -a /etc/puppetlabs/puppet/puppet.conf`
+- also set up masquerading on foreman master
 
-- `sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true`
-
-- `sudo /opt/puppetlabs/bin/puppet agent --test`
+## References
+- https://projects.theforeman.org/projects/foreman/wiki/Unattended_installations
+- https://access.redhat.com/documentation/en-us/red_hat_satellite/6.3/html-single/provisioning_guide/
+- https://access.redhat.com/discussions/2085933
