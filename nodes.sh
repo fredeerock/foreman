@@ -26,6 +26,6 @@ echo "runinterval = 120s" | sudo tee -a /etc/puppetlabs/puppet/puppet.conf
 sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
 
 # Initialize Node
-sudo /opt/puppetlabs/bin/puppet agent --test
+sudo /opt/puppetlabs/bin/puppet agent --test --waitforcert 60
 
-# At this point you do have to sign the nodes on Foreman Master.
+# Go to Formeman Master > Infrastructure > Smart Proxies > Puppet CA > Certificates to for sign new node.

@@ -54,7 +54,8 @@ sudo foreman-installer \
 --foreman-proxy-dns-server "192.168.33.10" \
 --enable-foreman-plugin-discovery \
 --enable-foreman-proxy-plugin-discovery \
---foreman-proxy-plugin-discovery-install-images=true
+--foreman-proxy-plugin-discovery-install-images=true\
+--puppet-autosign-entries='*.example.com'
 
 # Initialize Node
 sudo /opt/puppetlabs/bin/puppet agent --test
