@@ -94,10 +94,11 @@ vagrant up
 1. Create a Hammer authentication file.
 
 ```bash
-echo ":foreman:" > ~/.hammer/cli_config.yml \
-echo "  :host: 'https://foreman.example.com/'" >> ~/.hammer/cli_config.yml \
-echo "  :username: 'admin'" >> ~/.hammer/cli_config.yml \
-echo "  :password: '$(sudo awk '/^ *admin_password:/ { print $2 }' /etc/foreman-installer/scenarios.d/foreman-answers.yaml)'" >> ~/.hammer/cli_config.yml \
+mkdir .hammer
+echo -e ":foreman:\n\
+  :host: 'https://foreman.example.com/'\n\
+  :username: 'admin'\n\
+  :password: '$(sudo awk '/^ *admin_password:/ { print $2 }' /etc/foreman-installer/scenarios.d/foreman-answers.yaml)'" > ~/.hammer/cli_config.yml &&
 sudo chmod 600 ~/.hammer/cli_config.yml
 ```
 
@@ -158,12 +159,21 @@ hammer template build-pxe-default
 
 ## Forman Node
 
-Boot a node with DHCP to provision with Foreman using PXE. *Make sure private network name (ex: vboxnet42) matchs in Vagrantfile.* 
+1. Boot a node with DHCP to provision with Foreman using PXE. *Make sure private network name (ex: vboxnet42) matchs in Vagrantfile.* 
+
 ```bash
 cd ..
 cd node2
 vagrant up
 ```
+2. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
+
+3. Go to foreman.example.com on host computer. 
+- Login using credentials from `~/.hammer/cli_config.yml` on guest. 
+- Navigate to Hosts > Discovered Hosts
+- Click Provision and choose Host Group **Base**.
+- Wait for installation to finish.
+- Once complete you can login with the Host Group password made in step 5 above.
 
 ## References
 - https://theforeman.org/manuals/1.19
