@@ -38,7 +38,7 @@ nmcli con show
 sudo nmcli con mod "System eth0" connection.zone external
 ```
 
-Boot a node with static IP. 
+Optionally, boot a node with static IP to immediately add to Foreman. Oherwise proceed to the next step to set up a provisioning and PXE boot a blank node. 
 ```bash
 cd ..
 cd node1
