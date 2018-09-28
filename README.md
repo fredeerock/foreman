@@ -180,3 +180,7 @@ vagrant up
 - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.4-beta 
 
 ## Troubleshooting
+
+* Putting host IP in for nameserver in /etc/resolv.conf seems to help anisble reach guests using FQDNs.
+* Also make sure to supply user and password to ansible.
+* Probably should add SSH keys on host creation.

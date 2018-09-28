@@ -60,7 +60,10 @@ sudo foreman-installer \
 --enable-foreman-plugin-discovery \
 --enable-foreman-proxy-plugin-discovery \
 --foreman-proxy-plugin-discovery-install-images=true \
---puppet-autosign-entries="*.example.com"
+--puppet-autosign-entries="*.example.com" \
+--enable-foreman-plugin-remote-execution \
+--enable-foreman-proxy-plugin-remote-execution-ssh \
+-–enable-foreman-plugin-docker
 
 # Initialize Node
 sudo /opt/puppetlabs/bin/puppet agent --test
