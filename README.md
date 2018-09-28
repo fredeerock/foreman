@@ -88,10 +88,6 @@ vagrant up
       - PXE Loader: PXELinux BIOS
       - Root Pass: changeme
 9. **Hosts > Provisioning Templates > Build PXE Default**
-10. Not working yet.
-    - Maybe need to change name server settings in the installer.
-    - May have to change proxy_url in kernel options on new host to IP instead of hostname if DNS isn't functional. 
-    - Also this should be change other places too. Maybe include in kickstart script to use IP instead of FQDN.
 
 ### Option 2: Hammer CLI
 
@@ -160,6 +156,8 @@ hammer hostgroup create --name "Base" \
 hammer template build-pxe-default
 ```
 
+## Forman Node
+
 Boot a node with DHCP to provision with Foreman using PXE. *Make sure private network name (ex: vboxnet42) matchs in Vagrantfile.* 
 ```bash
 cd ..
@@ -170,3 +168,5 @@ vagrant up
 ## References
 - https://theforeman.org/manuals/1.19
 - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.4-beta 
+
+## Troubleshooting
