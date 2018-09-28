@@ -39,22 +39,27 @@ sudo yum -y install https://yum.theforeman.org/releases/1.19/el7/x86_64/foreman-
 sudo yum -y install foreman-installer
 sudo foreman-installer \
 --foreman-proxy-tftp=true \
+--foreman-proxy-tftp-managed=true \
 --foreman-proxy-tftp-servername=192.168.33.10 \
 --foreman-proxy-dhcp=true \
+--foreman-proxy-dhcp-managed=true \
 --foreman-proxy-dhcp-interface=eth1 \
 --foreman-proxy-dhcp-gateway=192.168.33.10 \
 --foreman-proxy-dhcp-range="192.168.33.101 192.168.33.150" \
---foreman-proxy-dhcp-nameservers="8.8.8.8" \
+--foreman-proxy-dhcp-nameservers="192.168.33.10" \
 --foreman-proxy-dhcp-server "192.168.33.10" \
 --foreman-proxy-dns=true \
+--foreman-proxy-dns-managed=true \
 --foreman-proxy-dns-interface=eth1 \
 --foreman-proxy-dns-zone=example.com \
 --foreman-proxy-dns-reverse=33.168.192.in-addr.arpa \
---foreman-proxy-dns-forwarders="8.8.8.8; 4.4.4.4" \
+--foreman-proxy-dns-forwarders="8.8.8.8; 1.1.1.1" \
 --foreman-proxy-dns-server "192.168.33.10" \
+--enable-foreman-plugin-ansible \
+--enable-foreman-proxy-plugin-ansible \
 --enable-foreman-plugin-discovery \
 --enable-foreman-proxy-plugin-discovery \
---foreman-proxy-plugin-discovery-install-images=true\
+--foreman-proxy-plugin-discovery-install-images=true \
 --puppet-autosign-entries='*.example.com'
 
 # Initialize Node
