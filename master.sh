@@ -46,21 +46,21 @@ sudo foreman-installer \
 --foreman-proxy-dhcp-interface=eth1 \
 --foreman-proxy-dhcp-gateway=192.168.33.10 \
 --foreman-proxy-dhcp-range="192.168.33.101 192.168.33.150" \
---foreman-proxy-dhcp-nameservers="192.168.33.10" \
---foreman-proxy-dhcp-server "192.168.33.10" \
+--foreman-proxy-dhcp-nameservers=192.168.33.10 \
+--foreman-proxy-dhcp-server 192.168.33.10 \
 --foreman-proxy-dns=true \
 --foreman-proxy-dns-managed=true \
 --foreman-proxy-dns-interface=eth1 \
 --foreman-proxy-dns-zone=example.com \
 --foreman-proxy-dns-reverse=33.168.192.in-addr.arpa \
 --foreman-proxy-dns-forwarders="8.8.8.8; 1.1.1.1" \
---foreman-proxy-dns-server "192.168.33.10" \
+--foreman-proxy-dns-server 192.168.33.10 \
 --enable-foreman-plugin-ansible \
 --enable-foreman-proxy-plugin-ansible \
 --enable-foreman-plugin-discovery \
 --enable-foreman-proxy-plugin-discovery \
 --foreman-proxy-plugin-discovery-install-images=true \
---puppet-autosign-entries='*.example.com'
+--puppet-autosign-entries="*.example.com"
 
 # Initialize Node
 sudo /opt/puppetlabs/bin/puppet agent --test

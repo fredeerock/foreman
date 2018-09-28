@@ -110,7 +110,7 @@ hammer domain update --name "example.com" --dns "foreman.example.com"
 3. Create a subnet.
 
 ```bash
-hammer subnet create --name "ACME's Internal Network" \
+hammer subnet create --name "My Subnet" \
 --description "your_description" \
 --network "192.168.33.0" --mask "255.255.255.0" \
 --gateway "192.168.33.10" --dns-primary "192.168.33.10" \
@@ -142,7 +142,7 @@ hammer hostgroup create --name "Base" \
 --puppet-ca-proxy-id 1 \
 --puppet-proxy-id 1 \
 --domain "example.com" \
---subnet "ACME's Internal Network" \
+--subnet "My Subnet" \
 --architecture "x86_64" \
 --operatingsystem "CentOS 7.5.1804" \
 --medium "CentOS mirror" \
