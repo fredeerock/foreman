@@ -1,5 +1,5 @@
 # Foreman + Vagrant
-The following is a simple Foreman installation running on Virtual Machines. There is 1 Master node, 1 node with a static IP and existing OS, and 1 node that PXE boots and can provisioned by Foreman.
+The following is a Foreman installation running on Virtual Machines. There is 1 Master node, 1 node with a static IP and existing OS, and 1 node that PXE boots and can provisioned by Foreman.
 
 ## Foreman Master
 Install Vagrant and VirtualBox.
