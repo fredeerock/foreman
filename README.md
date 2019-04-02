@@ -148,6 +148,14 @@ hammer subnet create --name "My Subnet" \
 
 6. Add OS associations (configuration templates, partition table, installation media).
 
+Double check config-template-id numbers with the ones output with the command below.
+
+```bash
+hammer template list | grep 'Kickstart'
+```
+
+Associate the templates with the OS.
+
 ```bash
 hammer os add-config-template --id 1 --config-template "Kickstart default" &&
 hammer os add-config-template --id 1 --config-template "Kickstart default finish" &&
@@ -166,7 +174,6 @@ hammer os update --id 1 --media "CentOS mirror"
 First check what operating systems are available with the following command and make sure its output matches the **operatingsystem** argument below.
 
 `hammer os list`  
-
 
 ```bash
 hammer hostgroup create --name "Base" \
