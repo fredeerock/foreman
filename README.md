@@ -93,9 +93,9 @@ vagrant up
 
 ### Option 2: Hammer CLI
 
-0. SSH into foreman master.
+1. SSH into foreman master.
 
-1. Create a Hammer authentication file.
+2. Create a Hammer authentication file.
 
 ```bash
 mkdir .hammer
@@ -106,13 +106,35 @@ echo -e ":foreman:\n\
 sudo chmod 600 ~/.hammer/cli_config.yml
 ```
 
-2. Associate Domain with DNS Proxy
+3. Set default organization and location.
+
+See current oranizations and locations.
+
+```bash
+hammer organization list
+hammer location list
+```
+
+Set defaults.
+
+```bash
+hammer defaults add --param-name organization_id --param-value 2
+hammer defaults add --param-name location_id --param-value 1
+```
+
+Check.
+
+```bash
+hammer defaults list
+```
+
+4. Associate Domain with DNS Proxy
 
 ```bash
 hammer domain update --name "example.com" --dns "foreman.example.com"
 ```
 
-3. Create a subnet.
+5. Create a subnet.
 
 ```bash
 hammer subnet create --name "My Subnet" \
@@ -124,7 +146,7 @@ hammer subnet create --name "My Subnet" \
 --domains "example.com" --dhcp-id 1 --dns-id 1 --tftp-id 1 --discovery-id 1
 ```
 
-4. Add OS associations (configuration templates, partition table, installation media).
+6. Add OS associations (configuration templates, partition table, installation media).
 
 ```bash
 hammer os add-config-template --id 1 --config-template "Kickstart default" &&
@@ -139,9 +161,12 @@ hammer os add-ptable --id 1 --partition-table "Kickstart default" &&
 hammer os update --id 1 --media "CentOS mirror"
 ```
 
-5. Create Host Group
+7. Create Host Group
 
-First check what operating systems are available with: `hammer os list`. Make sure the output of this matches the `operatingsystem` argument below. 
+First check what operating systems are available with the following command and make sure its output matches the **operatingsystem** argument below.
+
+`hammer os list`  
+
 
 ```bash
 hammer hostgroup create --name "Base" \
@@ -157,13 +182,15 @@ hammer hostgroup create --name "Base" \
 --root-pass "p@55w0rd"
 ```
 
-6. Build PXE Defaults
+8. Build PXE Defaults
 
 ```bash
 hammer template build-pxe-default
 ```
 
 ## Forman Node
+
+Back on your host machine.
 
 1. Boot a node with DHCP to provision with Foreman using PXE. *Make sure private network name (ex: vboxnet0) matchs in Vagrantfile.* 
 
@@ -174,8 +201,8 @@ vagrant up
 ```
 2. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
 
-3. Go to foreman.example.com on host computer. 
-- Login using credentials from `~/.hammer/cli_config.yml` on guest. 
+3. Go to foreman.example.com on host machine. 
+- If you've forgotten the login username and password check the credentials from `~/.hammer/cli_config.yml` on foreman master. 
 - Navigate to Hosts > Discovered Hosts
 - Click Provision and choose Host Group **Base**.
 - Wait for installation to finish.
