@@ -66,4 +66,8 @@ sudo foreman-installer \
 # -–enable-foreman-plugin-docker
 
 # Initialize Node
+while [ -f /opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock ]
+do
+  sleep 2
+done
 sudo /opt/puppetlabs/bin/puppet agent --test

@@ -9,8 +9,6 @@ brew cask install virtualbox
 brew cask install vagrant
 ```
 
-The following assumes VirtualBox either doesn't have any **Host-Only** networks or if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has at least `192.168.33.10` available.  
-
 If you don't have FQDN on Foreman Master or a test node use the following on your host machine.
 
 ```bash
@@ -24,6 +22,17 @@ Clone the repo.
 git clone https://github.com/fredeerock/foreman
 cd foreman
 ```
+
+Assumptions
+- The following assumes VirtualBox either doesn't have any **Host-Only** networks or if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has at least `192.168.33.10` available. 
+- The `master.sh` script contains the following set values in the `foreman-installer` command. These should be changed to match your network environment.
+  - `--foreman-proxy-tftp-servername=192.168.33.10`
+  - `--foreman-proxy-dhcp-gateway=192.168.33.10`
+  - `--foreman-proxy-dhcp-range="192.168.33.101 192.168.33.150"`
+  - `--foreman-proxy-dhcp-nameservers=192.168.33.10`
+  - `--foreman-proxy-dhcp-server 192.168.33.10`
+  - `--foreman-proxy-dns-reverse=33.168.192.in-addr.arpa`
+  - `--foreman-proxy-dns-server 192.168.33.10`
 
 Boot Foreman Master using Vagrant.
 ```bash
