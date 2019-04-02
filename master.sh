@@ -10,8 +10,8 @@
 sudo hostnamectl set-hostname foreman.example.com
 echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
 
-# Uncomment if not running DHCP or DNS on Foreman Master and want to test a node out.
-# echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
+# Comment out if not running DHCP or DNS on Foreman Master and want to test a node out.
+echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
 
 # Firewall
 sudo systemctl start firewalld 

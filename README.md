@@ -31,7 +31,7 @@ cd master
 vagrant up
 ```
 
-SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name.
+SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
 
 ```bash
 vagrant ssh
@@ -93,6 +93,8 @@ vagrant up
 
 ### Option 2: Hammer CLI
 
+0. SSH into foreman master.
+
 1. Create a Hammer authentication file.
 
 ```bash
@@ -100,7 +102,7 @@ mkdir .hammer
 echo -e ":foreman:\n\
   :host: 'https://foreman.example.com/'\n\
   :username: 'admin'\n\
-  :password: '$(sudo awk '/^ *admin_password:/ { print $2 }' /etc/foreman-installer/scenarios.d/foreman-answers.yaml)'" > ~/.hammer/cli_config.yml &&
+  :password: '$(sudo awk '/^ *initial_admin_password:/ { print $2 }' /etc/foreman-installer/scenarios.d/foreman-answers.yaml)'" > ~/.hammer/cli_config.yml
 sudo chmod 600 ~/.hammer/cli_config.yml
 ```
 
@@ -139,6 +141,8 @@ hammer os update --id 1 --media "CentOS mirror"
 
 5. Create Host Group
 
+First check what operating systems are available with: `hammer os list`. Make sure the output of this matches the `operatingsystem` argument below. 
+
 ```bash
 hammer hostgroup create --name "Base" \
 --environment "production" \
@@ -147,7 +151,7 @@ hammer hostgroup create --name "Base" \
 --domain "example.com" \
 --subnet "My Subnet" \
 --architecture "x86_64" \
---operatingsystem "CentOS 7.5.1804" \
+--operatingsystem "CentOS 7.6.1810" \
 --medium "CentOS mirror" \
 --partition-table "Kickstart default" \
 --root-pass "p@55w0rd"
@@ -161,7 +165,7 @@ hammer template build-pxe-default
 
 ## Forman Node
 
-1. Boot a node with DHCP to provision with Foreman using PXE. *Make sure private network name (ex: vboxnet42) matchs in Vagrantfile.* 
+1. Boot a node with DHCP to provision with Foreman using PXE. *Make sure private network name (ex: vboxnet0) matchs in Vagrantfile.* 
 
 ```bash
 cd ..
@@ -186,3 +190,4 @@ vagrant up
 * Putting host IP in for nameserver in /etc/resolv.conf seems to help anisble reach guests using FQDNs.
 * Also make sure to supply user and password to ansible.
 * Probably should add SSH keys on host creation.
+* If getting `Notice: Run of Puppet configuration client already in progress; skipping (/opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock exists)` try re-running `sudo /opt/puppetlabs/bin/puppet agent --test --debug` on master node. 
