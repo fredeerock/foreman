@@ -161,10 +161,10 @@ hammer os add-config-template --id 1 --config-template "Kickstart default" &&
 hammer os add-config-template --id 1 --config-template "Kickstart default finish" &&
 hammer os add-config-template --id 1 --config-template "Kickstart default PXELinux" &&
 hammer os add-config-template --id 1 --config-template "Kickstart default iPXE" &&
-hammer os set-default-template --id 1 --config-template-id 31 &&
-hammer os set-default-template --id 1 --config-template-id 34 &&
-hammer os set-default-template --id 1 --config-template-id 35 &&
-hammer os set-default-template --id 1 --config-template-id 38 &&
+hammer os set-default-template --id 1 --config-template-id 47 &&
+hammer os set-default-template --id 1 --config-template-id 30 &&
+hammer os set-default-template --id 1 --config-template-id 14 &&
+hammer os set-default-template --id 1 --config-template-id 37 &&
 hammer os add-ptable --id 1 --partition-table "Kickstart default" &&
 hammer os update --id 1 --media "CentOS mirror"
 ```
@@ -213,7 +213,9 @@ vagrant up
 - Navigate to Hosts > Discovered Hosts
 - Click Provision and choose Host Group **Base**.
 - Wait for installation to finish.
-- Once complete you can login with the Host Group password made in step 5 above.
+- Once complete you can login with the Host Group password made in step 7 above.
+
+4. You may alos choose to do the above step using the command line, but you have to install the hammer discovery plugin `yum install rubygem-hammer_cli_foreman_discovery` and set it up via: https://theforeman.org/plugins/foreman_discovery/4.0/index.html. 
 
 ## References
 - https://theforeman.org/manuals/1.19
