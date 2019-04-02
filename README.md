@@ -9,7 +9,7 @@ brew cask install virtualbox
 brew cask install vagrant
 ```
 
-The following assumes VirtualBox either doesn't have any **Host-Only** networks or if you do have `vboxnet0` already that it uses the default `192.168.33.1` address and has at leat `192.168.33.10` available.  
+The following assumes VirtualBox either doesn't have any **Host-Only** networks or if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has at least `192.168.33.10` available.  
 
 If you don't have FQDN on Foreman Master or a test node use the following on your host machine.
 

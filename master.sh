@@ -10,8 +10,8 @@
 sudo hostnamectl set-hostname foreman.example.com
 echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
 
-# Comment out if running DHCP or DNS on Foreman Master and want to test a node out.
-echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
+# Uncomment if not running DHCP or DNS on Foreman Master and want to test a node out.
+# echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
 
 # Firewall
 sudo systemctl start firewalld 
@@ -33,7 +33,7 @@ sudo firewall-cmd --reload
 # Repositories
 sudo yum -y install https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
 sudo yum -y install http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-sudo yum -y install https://yum.theforeman.org/releases/1.19/el7/x86_64/foreman-release.rpm
+sudo yum -y install https://yum.theforeman.org/releases/1.21/el7/x86_64/foreman-release.rpm
 
 # Install Foreman
 sudo yum -y install foreman-installer
@@ -55,15 +55,14 @@ sudo foreman-installer \
 --foreman-proxy-dns-reverse=33.168.192.in-addr.arpa \
 --foreman-proxy-dns-forwarders="8.8.8.8; 1.1.1.1" \
 --foreman-proxy-dns-server 192.168.33.10 \
+--puppet-autosign-entries="*.example.com" \
 --enable-foreman-plugin-ansible \
 --enable-foreman-proxy-plugin-ansible \
 --enable-foreman-plugin-discovery \
 --enable-foreman-proxy-plugin-discovery \
 --foreman-proxy-plugin-discovery-install-images=true \
---puppet-autosign-entries="*.example.com" \
 --enable-foreman-plugin-remote-execution \
 --enable-foreman-proxy-plugin-remote-execution-ssh
-
 # -–enable-foreman-plugin-docker
 
 # Initialize Node
