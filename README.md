@@ -1,68 +1,23 @@
 # Foreman on Vagrant or Baremetal
 The following is a Foreman installation guide running on virtual machines or on baremetal with CentOS 7. The examples below include 1 master node, 1 node with a static IP and existing OS, and 1 node that PXE boots and can provisioned by Foreman.
 
-## Installation
+## Baremetal
 
-### Vagrant or Baremetal
+The following assumes your master node has an FQDN already being supplied to it via DNS. It also assumes you have 2 NICs, one attached to a WAN and one attached to a LAN for your internal nodes. 
 
-1. If you don't have FQDN on Foreman Master or a test node use the following on your host machine.
-
-```bash
-echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
-echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
-```
-
-2. Clone the repo.
-
-```bash
-git clone https://github.com/fredeerock/foreman
-cd foreman
-```
-
-3. You should make any needed **variable** edits inside of `master.sh` or `nodes.sh`. In particular, for `DOMAIN` and `MASTER_HOSTNAME`.
-
-### Baremetal
-
-1. Download and run the shell script.
+1. Download the shell script.
 
 ```bash
 curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/master.sh
+```
+
+2. Make any needed **variable** edits inside of `master.sh` or `nodes.sh`. In particular, for `DOMAIN` and `MASTER_HOSTNAME`.
+
+3. Run the shell script.
+
+```bash
 chmod 744 master.sh
 ./master.sh
-```
-
-2. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
-
-```bash
-ip a
-nmcli con show
-sudo nmcli con mod "System eth0" connection.zone external
-```
-
-3. A this point you can proceed to the provisioning section to add nodes via PXE booting.
-
-4. You may also choose to run the `nodes.sh` shell script on any nodes with CentOS already installed. After downloading the script make sure to change any parameters you wish.
-
-```bash
-curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/nodes.sh
-chmod 744 nodes.sh
-./nodes.sh
-```
-
-### Vagrant
-1. If you're using virtual machines, install Vagrant and VirtualBox.
-
-```bash
-brew cask install virtualbox
-brew cask install vagrant
-```
-
-2. Check that VirtualBox either doesn't have any **Host-Only** networks or if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has at least `192.168.33.10` available.
-
-3. Boot Foreman Master using Vagrant.
-```bash
-cd master
-vagrant up
 ```
 
 4. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
@@ -73,14 +28,65 @@ nmcli con show
 sudo nmcli con mod "System eth0" connection.zone external
 ```
 
-5. Optionally, boot a node with static IP to immediately add to Foreman.  
+5. A this point you can proceed to the provisioning section to add nodes via PXE booting.
+
+6. You may also choose to run the `nodes.sh` shell script on any nodes with CentOS already installed. After downloading the script make sure to change any parameters you wish.
+
+```bash
+curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/nodes.sh
+chmod 744 nodes.sh
+./nodes.sh
+```
+
+## Vagrant
+
+1. If you don't have FQDN on Foreman Master or a test node use the following on your host machine.
+
+```bash
+echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
+echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
+```
+
+2. Install Vagrant and VirtualBox.
+
+```bash
+brew cask install virtualbox
+brew cask install vagrant
+```
+
+3. Check that VirtualBox  doesn't have any **Host-Only** networks and if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has `192.168.33.10` available.
+
+4. Clone the repo.
+
+```bash
+git clone https://github.com/fredeerock/foreman
+cd foreman
+```
+
+5. Make any needed **variable** edits inside of `master.sh` or `nodes.sh`. In particular, for `DOMAIN` and `MASTER_HOSTNAME`.
+
+6. Boot Foreman Master using Vagrant.
+```bash
+cd master
+vagrant up
+```
+
+7. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
+
+```bash
+ip a
+nmcli con show
+sudo nmcli con mod "System eth0" connection.zone external
+```
+
+8. Optionally, boot a node with static IP to immediately add to Foreman.  
 ```bash
 cd ..
 cd node1
 vagrant up
 ```
 
-6. Oherwise proceed to the next step to set up a provisioning and PXE boot a blank node.
+9. Oherwise proceed to the next step to set up a provisioning and PXE boot a blank node.
 
 ## Provisioning
 
