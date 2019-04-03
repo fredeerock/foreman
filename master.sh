@@ -24,7 +24,7 @@ sudo hostnamectl set-hostname $MASTER_FQDN
 # Comment out these lines if your host has a FQDN.
 echo "$MASTER_IP $MASTER_FQDN" | sudo tee -a /etc/hosts
 
-# Comment out if running DHCP or DNS on Foreman Master and want to test a node out.
+# Comment out if not running DHCP or DNS on Foreman Master and want to test a node out.
 echo "192.168.33.20 $NODE1_FQDN" | sudo tee -a /etc/hosts
 
 # Firewall

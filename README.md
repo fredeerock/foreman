@@ -1,5 +1,5 @@
 # Foreman on Vagrant or Baremetal
-The following is a Foreman installation guide running on virtual machines or on baremetal with CentOS 7. The examples below include 1 master node, 1 node with a static IP and existing OS, and 1 node that PXE boots and can provisioned by Foreman.
+The following is a Foreman installation guide running on virtual machines or on baremetal with a minimal install of CentOS 7. The examples below include 1 master node, 1 node with a static IP and existing OS, and 1 node that PXE boots and can provisioned by Foreman.
 
 ## Baremetal
 
