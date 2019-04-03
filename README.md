@@ -17,7 +17,7 @@ curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/master.sh
 
 ```bash
 chmod 744 master.sh
-./master.sh
+sudo ./master.sh
 ```
 
 4. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
@@ -35,7 +35,7 @@ sudo nmcli con mod "System eth0" connection.zone external
 ```bash
 curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/nodes.sh
 chmod 744 nodes.sh
-./nodes.sh
+sudo ./nodes.sh
 ```
 
 ## Vagrant

@@ -16,42 +16,42 @@ MASTER_FQDN=$MASTER_HOSTNAME.$DOMAIN
 NODE1_FQDN=$MASTER_HOSTNAME.$DOMAIN
 
 # Uncomment if you want to update everything first.
-# sudo yum update -y
+# yum update -y
 
 # Change the following to you hostname
-sudo hostnamectl set-hostname $MASTER_FQDN
+hostnamectl set-hostname $MASTER_FQDN
 
 # Comment out these lines if your host has a FQDN.
-echo "$MASTER_IP $MASTER_FQDN" | sudo tee -a /etc/hosts
+echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
 
 # Comment out if not running DHCP or DNS on Foreman Master and want to test a node out.
-echo "192.168.33.20 $NODE1_FQDN" | sudo tee -a /etc/hosts
+echo "192.168.33.20 $NODE1_FQDN" | tee -a /etc/hosts
 
 # Firewall
-sudo systemctl start firewalld 
-sudo systemctl enable firewalld
-sudo firewall-cmd --permanent --add-service=http
-sudo firewall-cmd --permanent --add-service=https
-sudo firewall-cmd --permanent --add-port=69/tcp
-sudo firewall-cmd --permanent --add-port=67-69/udp
-sudo firewall-cmd --permanent --add-port=53/tcp
-sudo firewall-cmd --permanent --add-port=53/udp
-sudo firewall-cmd --permanent --add-port=3000/tcp
-sudo firewall-cmd --permanent --add-port=3306/tcp
-sudo firewall-cmd --permanent --add-port=5910-5930/tcp
-sudo firewall-cmd --permanent --add-port=5432/tcp
-sudo firewall-cmd --permanent --add-port=8140/tcp
-sudo firewall-cmd --permanent --add-port=8443/tcp
-sudo firewall-cmd --reload
+systemctl start firewalld 
+systemctl enable firewalld
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --permanent --add-port=69/tcp
+firewall-cmd --permanent --add-port=67-69/udp
+firewall-cmd --permanent --add-port=53/tcp
+firewall-cmd --permanent --add-port=53/udp
+firewall-cmd --permanent --add-port=3000/tcp
+firewall-cmd --permanent --add-port=3306/tcp
+firewall-cmd --permanent --add-port=5910-5930/tcp
+firewall-cmd --permanent --add-port=5432/tcp
+firewall-cmd --permanent --add-port=8140/tcp
+firewall-cmd --permanent --add-port=8443/tcp
+firewall-cmd --reload
 
 # Repositories
-sudo yum -y install https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
-sudo yum -y install http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-sudo yum -y install https://yum.theforeman.org/releases/1.21/el7/x86_64/foreman-release.rpm
+yum -y install https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
+yum -y install http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum -y install https://yum.theforeman.org/releases/1.21/el7/x86_64/foreman-release.rpm
 
 # Install Foreman
-sudo yum -y install foreman-installer
-sudo foreman-installer \
+yum -y install foreman-installer
+foreman-installer \
 --foreman-proxy-tftp=true \
 --foreman-proxy-tftp-managed=true \
 --foreman-proxy-tftp-servername=$MASTER_IP \
@@ -84,4 +84,4 @@ while [ -f /opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock ]
 do
   sleep 2
 done
-sudo /opt/puppetlabs/bin/puppet agent --test
+/opt/puppetlabs/bin/puppet agent --test
