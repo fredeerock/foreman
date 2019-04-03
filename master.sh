@@ -3,15 +3,29 @@
 # This script sets up Foreman Master with DHCP, DNS, and PXE. 
 # It assumes a development environment with no FQDN on master or node1.
 
+# VARIABLES
+DOMAIN=example.com
+MASTER_HOSTNAME=foreman
+MASTER_IP=192.168.33.10
+REVERSE_DNS_ZONE=33.168.192.in-addr.arpa
+DHCP_RANGE="192.168.33.101 192.168.33.150"
+NODE1_HOSTNAME=node1
+NODE1_IP=192.168.33.20
+
+MASTER_FQDN=$MASTER_HOSTNAME.$DOMAIN
+NODE1_FQDN=$MASTER_HOSTNAME.$DOMAIN
+
 # Uncomment if you want to update everything first.
 # sudo yum update -y
 
-# Comment out these lines if your host has a FQDN.
-sudo hostnamectl set-hostname foreman.example.com
-echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
+# Change the following to you hostname
+sudo hostnamectl set-hostname $MASTER_FQDN
 
-# Comment out if not running DHCP or DNS on Foreman Master and want to test a node out.
-echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
+# Comment out these lines if your host has a FQDN.
+echo "$MASTER_IP $MASTER_FQDN" | sudo tee -a /etc/hosts
+
+# Comment out if running DHCP or DNS on Foreman Master and want to test a node out.
+echo "192.168.33.20 $NODE1_FQDN" | sudo tee -a /etc/hosts
 
 # Firewall
 sudo systemctl start firewalld 
@@ -40,22 +54,22 @@ sudo yum -y install foreman-installer
 sudo foreman-installer \
 --foreman-proxy-tftp=true \
 --foreman-proxy-tftp-managed=true \
---foreman-proxy-tftp-servername=192.168.33.10 \
+--foreman-proxy-tftp-servername=$MASTER_IP \
 --foreman-proxy-dhcp=true \
 --foreman-proxy-dhcp-managed=true \
 --foreman-proxy-dhcp-interface=eth1 \
---foreman-proxy-dhcp-gateway=192.168.33.10 \
+--foreman-proxy-dhcp-gateway=$MASTER_IP \
 --foreman-proxy-dhcp-range="192.168.33.101 192.168.33.150" \
---foreman-proxy-dhcp-nameservers=192.168.33.10 \
---foreman-proxy-dhcp-server 192.168.33.10 \
+--foreman-proxy-dhcp-nameservers=$MASTER_IP \
+--foreman-proxy-dhcp-server $MASTER_IP \
 --foreman-proxy-dns=true \
 --foreman-proxy-dns-managed=true \
 --foreman-proxy-dns-interface=eth1 \
---foreman-proxy-dns-zone=example.com \
---foreman-proxy-dns-reverse=33.168.192.in-addr.arpa \
+--foreman-proxy-dns-zone=$DOMAIN \
+--foreman-proxy-dns-reverse=$REVERSE_DNS_ZONE \
 --foreman-proxy-dns-forwarders="8.8.8.8; 1.1.1.1" \
---foreman-proxy-dns-server 192.168.33.10 \
---puppet-autosign-entries="*.example.com" \
+--foreman-proxy-dns-server $MASTER_IP \
+--puppet-autosign-entries="*.$DOMAIN" \
 --enable-foreman-plugin-ansible \
 --enable-foreman-proxy-plugin-ansible \
 --enable-foreman-plugin-discovery \

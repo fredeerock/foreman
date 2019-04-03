@@ -1,60 +1,86 @@
-# Foreman + Vagrant
-The following is a Foreman installation running on Virtual Machines. There is 1 Master node, 1 node with a static IP and existing OS, and 1 node that PXE boots and can provisioned by Foreman.
+# Foreman on Vagrant or Baremetal
+The following is a Foreman installation guide running on virtual machines or on baremetal with CentOS 7. The examples below include 1 master node, 1 node with a static IP and existing OS, and 1 node that PXE boots and can provisioned by Foreman.
 
-## Foreman Master
-Install Vagrant and VirtualBox.
+## Installation
 
-```bash
-brew cask install virtualbox
-brew cask install vagrant
-```
+### Vagrant or Baremetal
 
-If you don't have FQDN on Foreman Master or a test node use the following on your host machine.
+1. If you don't have FQDN on Foreman Master or a test node use the following on your host machine.
 
 ```bash
 echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
 echo "192.168.33.20 node1.example.com" | sudo tee -a /etc/hosts
 ```
 
-Clone the repo.
+2. Clone the repo.
 
 ```bash
 git clone https://github.com/fredeerock/foreman
 cd foreman
 ```
 
-Assumptions
-- The following assumes VirtualBox either doesn't have any **Host-Only** networks or if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has at least `192.168.33.10` available. 
-- The `master.sh` script contains the following set values in the `foreman-installer` command. These should be changed to match your network environment.
-  - `--foreman-proxy-tftp-servername=192.168.33.10`
-  - `--foreman-proxy-dhcp-gateway=192.168.33.10`
-  - `--foreman-proxy-dhcp-range="192.168.33.101 192.168.33.150"`
-  - `--foreman-proxy-dhcp-nameservers=192.168.33.10`
-  - `--foreman-proxy-dhcp-server 192.168.33.10`
-  - `--foreman-proxy-dns-reverse=33.168.192.in-addr.arpa`
-  - `--foreman-proxy-dns-server 192.168.33.10`
+3. You should make any needed **variable** edits inside of `master.sh` or `nodes.sh`. In particular, for `DOMAIN` and `MASTER_HOSTNAME`.
 
-Boot Foreman Master using Vagrant.
+### Baremetal
+
+1. Download and run the shell script.
+
 ```bash
-cd master
-vagrant up
+curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/master.sh
+chmod 744 master.sh
+./master.sh
 ```
 
-SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
+2. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
 
 ```bash
-vagrant ssh
 ip a
 nmcli con show
 sudo nmcli con mod "System eth0" connection.zone external
 ```
 
-Optionally, boot a node with static IP to immediately add to Foreman. Oherwise proceed to the next step to set up a provisioning and PXE boot a blank node. 
+3. A this point you can proceed to the provisioning section to add nodes via PXE booting.
+
+4. You may also choose to run the `nodes.sh` shell script on any nodes with CentOS already installed. After downloading the script make sure to change any parameters you wish.
+
+```bash
+curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/nodes.sh
+chmod 744 nodes.sh
+./nodes.sh
+```
+
+### Vagrant
+1. If you're using virtual machines, install Vagrant and VirtualBox.
+
+```bash
+brew cask install virtualbox
+brew cask install vagrant
+```
+
+2. Check that VirtualBox either doesn't have any **Host-Only** networks or if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has at least `192.168.33.10` available.
+
+3. Boot Foreman Master using Vagrant.
+```bash
+cd master
+vagrant up
+```
+
+4. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
+
+```bash
+ip a
+nmcli con show
+sudo nmcli con mod "System eth0" connection.zone external
+```
+
+5. Optionally, boot a node with static IP to immediately add to Foreman.  
 ```bash
 cd ..
 cd node1
 vagrant up
 ```
+
+6. Oherwise proceed to the next step to set up a provisioning and PXE boot a blank node.
 
 ## Provisioning
 
