@@ -1,7 +1,7 @@
 #!/bin/sh -x
 
 # This script sets up Foreman Master with DHCP, DNS, and PXE. 
-# It assumes a development environment with no FQDN on master or node1.
+# It assumes a development environment with no FQDN on master or node1. Most commands should be run with sudo. Vagrant does this automatically. If running script manually add sudo to it before running. 
 
 # VARIABLES
 DOMAIN=example.com
