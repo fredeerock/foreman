@@ -13,7 +13,7 @@ NODE1_HOSTNAME=node1
 NODE1_IP=192.168.33.20
 
 MASTER_FQDN=$MASTER_HOSTNAME.$DOMAIN
-NODE1_FQDN=$MASTER_HOSTNAME.$DOMAIN
+NODE1_FQDN=$NODE1_HOSTNAME.$DOMAIN
 
 # Uncomment if you want to update everything first.
 # yum update -y
@@ -25,7 +25,7 @@ hostnamectl set-hostname $MASTER_FQDN
 echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
 
 # Comment out if not running DHCP or DNS on Foreman Master and want to test a node out.
-echo "192.168.33.20 $NODE1_FQDN" | tee -a /etc/hosts
+echo "$NODE1_IP $NODE1_FQDN" | tee -a /etc/hosts
 
 # Firewall
 systemctl start firewalld 
