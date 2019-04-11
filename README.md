@@ -11,16 +11,29 @@ The following assumes your master node has an FQDN already being supplied to it 
 curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/master.sh
 ```
 
-2. Make any needed **variable** edits inside of `master.sh` or `nodes.sh`. In particular, for `DOMAIN` and `MASTER_HOSTNAME`.
+2. Make a note of your LAN interface "device name" and "connection name."
 
-3. Run the shell script.
+```bash
+nmcli c s
+```
+
+3. Use somehting like `nmcli` to create a static ip address for you LAN interface. Replace "Wired connection 1" with the name of your connection from the previous step.
+
+```bash
+sudo nmcli c mod "Wired connection 1" ipv4.method manual ipv4.addr "192.168.33.10/24"
+sudo nmcli c up "Wired connection 1"
+```
+
+4. Make  needed **variable** edits inside of `master.sh` or `nodes.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, `MASTER_IP`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible.*
+
+5. Run the shell script.
 
 ```bash
 chmod 744 master.sh
 sudo ./master.sh
 ```
 
-4. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
+6. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
 
 ```bash
 ip a
@@ -28,9 +41,9 @@ nmcli con show
 sudo nmcli con mod "System eth0" connection.zone external
 ```
 
-5. A this point you can proceed to the provisioning section to add nodes via PXE booting.
+7. A this point you can proceed to the provisioning section to add nodes via PXE booting.
 
-6. You may also choose to run the `nodes.sh` shell script on any nodes with CentOS already installed. After downloading the script make sure to change any parameters you wish.
+8. You may also choose to run the `nodes.sh` shell script on any nodes with CentOS already installed. After downloading the script make sure to change any parameters you wish.
 
 ```bash
 curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/nodes.sh
