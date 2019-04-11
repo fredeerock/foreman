@@ -11,6 +11,7 @@ REVERSE_DNS_ZONE=33.168.192.in-addr.arpa
 DHCP_RANGE="192.168.33.101 192.168.33.150"
 NODE1_HOSTNAME=node1
 NODE1_IP=192.168.33.20
+LAN_IFACE=eth1
 
 MASTER_FQDN=$MASTER_HOSTNAME.$DOMAIN
 NODE1_FQDN=$NODE1_HOSTNAME.$DOMAIN
@@ -21,11 +22,11 @@ NODE1_FQDN=$NODE1_HOSTNAME.$DOMAIN
 # Change the following to you hostname
 hostnamectl set-hostname $MASTER_FQDN
 
-# Comment out these lines if your host has a FQDN.
+# Comment out this line if your host has a FQDN.
 echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
 
-# Comment out if not running DHCP or DNS on Foreman Master and want to test a node out.
-echo "$NODE1_IP $NODE1_FQDN" | tee -a /etc/hosts
+# Uncomment out if not running DHCP or DNS on Foreman Master and want to test a node out.
+# echo "$NODE1_IP $NODE1_FQDN" | tee -a /etc/hosts
 
 # Firewall
 systemctl start firewalld 
@@ -57,14 +58,14 @@ foreman-installer \
 --foreman-proxy-tftp-servername=$MASTER_IP \
 --foreman-proxy-dhcp=true \
 --foreman-proxy-dhcp-managed=true \
---foreman-proxy-dhcp-interface=eth1 \
+--foreman-proxy-dhcp-interface=$LAN_IFACE \
 --foreman-proxy-dhcp-gateway=$MASTER_IP \
 --foreman-proxy-dhcp-range="192.168.33.101 192.168.33.150" \
 --foreman-proxy-dhcp-nameservers=$MASTER_IP \
 --foreman-proxy-dhcp-server $MASTER_IP \
 --foreman-proxy-dns=true \
 --foreman-proxy-dns-managed=true \
---foreman-proxy-dns-interface=eth1 \
+--foreman-proxy-dns-interface=$LAN_IFACE \
 --foreman-proxy-dns-zone=$DOMAIN \
 --foreman-proxy-dns-reverse=$REVERSE_DNS_ZONE \
 --foreman-proxy-dns-forwarders="8.8.8.8; 1.1.1.1" \
