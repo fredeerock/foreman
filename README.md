@@ -184,6 +184,12 @@ hammer defaults list
 
 4. Associate Domain with DNS Proxy
 
+*Use sudo with the below command.*
+
+```bash
+sudo hammer domain update --name "example.com" --organization "Default Organization" --location "Default Location"
+```
+
 ```bash
 hammer domain update --name "example.com" --dns "foreman.example.com"
 ```
@@ -220,14 +226,23 @@ hammer os set-default-template --id 1 --config-template-id 30 &&
 hammer os set-default-template --id 1 --config-template-id 14 &&
 hammer os set-default-template --id 1 --config-template-id 37 &&
 hammer os add-ptable --id 1 --partition-table "Kickstart default" &&
-hammer os update --id 1 --media "CentOS mirror"
+```
+
+For some reason sudo is needed with this last command. Suspect location/organization needs changing via `hammer medium ...`.
+
+```bash
+sudo hammer os update --id 1 --media "CentOS mirror"
 ```
 
 7. Create Host Group
 
-First check what operating systems are available with the following command and make sure its output matches the **operatingsystem** argument below.
+First check what operating systems are available with the following command.
 
-`hammer os list`  
+```bash
+hammer os list
+```
+
+Make sure the above output matches the **operatingsystem** argument below.
 
 ```bash
 hammer hostgroup create --name "Base" \
