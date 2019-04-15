@@ -147,6 +147,8 @@ vagrant up
 
 ### Option 2: Hammer CLI
 
+`**I'm shifting this content to the hammer.sh script in the repo.**`
+
 1. SSH into foreman master.
 
 2. Create a Hammer authentication file.

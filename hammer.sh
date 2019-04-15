@@ -17,10 +17,6 @@ echo -e ":foreman:\n\
   :password: '$(sudo awk '/^ *initial_admin_password:/ { print $2 }' /etc/foreman-installer/scenarios.d/foreman-answers.yaml)'" > ~/.hammer/cli_config.yml
 sudo chmod 600 ~/.hammer/cli_config.yml
 
-# Associate medium with OS. Putting this before setting defaults to prevent an error.
-
-hammer os update --id 1 --media "CentOS mirror"
-
 # Change domains, environments, and smart proxies to defaults.
 
 hammer location update --name "Default Location" --domains "$DOMAIN" --environments "production" --smart-proxies "$MASTER_FQDN" --media "CentOS mirror"
@@ -69,6 +65,15 @@ hammer hostgroup create --name "Base" \
 --medium "CentOS mirror" \
 --partition-table "Kickstart default" \
 --root-pass "p@55w0rd"
+
+# Because of a bug the following actions error out when defaults are set so deleting them.
+
+hammer defaults delete --param-name organization_id
+hammer defaults delete --param-name location_id
+
+# Associate medium with OS.
+
+hammer os update --id 1 --media "CentOS mirror"
 
 # Build PXE Defaults
 
