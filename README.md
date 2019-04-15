@@ -162,18 +162,11 @@ sudo chmod 600 ~/.hammer/cli_config.yml
 
 3. Set default organization and location.
 
-Note current oranization and location IDs.
+Note current oranization and location names and IDs.
 
 ```bash
 hammer organization list
 hammer location list
-```
-
-Set defaults using above IDs.
-
-```bash
-hammer defaults add --param-name organization_id --param-value 2
-hammer defaults add --param-name location_id --param-value 1
 ```
 
 Change domains, environments, and smart proxies to defaults.
@@ -181,6 +174,13 @@ Change domains, environments, and smart proxies to defaults.
 ```bash
 hammer location update --name "Default Location" --domains "example.com" --environments "production" --smart-proxies "foreman.example.com"
 hammer organization update --name "Default Organization" --domains "example.com" --environments "production" --smart-proxies "foreman.example.com"
+```
+
+Set defaults using above IDs.
+
+```bash
+hammer defaults add --param-name organization_id --param-value 2
+hammer defaults add --param-name location_id --param-value 1
 ```
 
 4. Associate Domain with DNS Proxy
@@ -212,15 +212,15 @@ hammer template list | grep 'Kickstart'
 Associate the templates with the OS using above IDs.
 
 ```bash
-hammer os add-config-template --id 1 --config-template "Kickstart default" &&
-hammer os add-config-template --id 1 --config-template "Kickstart default finish" &&
-hammer os add-config-template --id 1 --config-template "Kickstart default PXELinux" &&
-hammer os add-config-template --id 1 --config-template "Kickstart default iPXE" &&
-hammer os set-default-template --id 1 --config-template-id 47 &&
-hammer os set-default-template --id 1 --config-template-id 30 &&
-hammer os set-default-template --id 1 --config-template-id 14 &&
-hammer os set-default-template --id 1 --config-template-id 37 &&
-hammer os add-ptable --id 1 --partition-table "Kickstart default" &&
+hammer os add-config-template --id 1 --config-template "Kickstart default"
+hammer os add-config-template --id 1 --config-template "Kickstart default finish"
+hammer os add-config-template --id 1 --config-template "Kickstart default PXELinux"
+hammer os add-config-template --id 1 --config-template "Kickstart default iPXE"
+hammer os set-default-template --id 1 --config-template-id 47
+hammer os set-default-template --id 1 --config-template-id 30
+hammer os set-default-template --id 1 --config-template-id 14
+hammer os set-default-template --id 1 --config-template-id 37
+hammer os add-ptable --id 1 --partition-table "Kickstart default"
 hammer os update --id 1 --media "CentOS mirror"
 ```
 
