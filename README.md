@@ -162,24 +162,18 @@ sudo chmod 600 ~/.hammer/cli_config.yml
 
 3. Set default organization and location.
 
-See current oranizations and locations.
+Note current oranization and location IDs.
 
 ```bash
 hammer organization list
 hammer location list
 ```
 
-Set defaults.
+Set defaults using above IDs.
 
 ```bash
 hammer defaults add --param-name organization_id --param-value 2
 hammer defaults add --param-name location_id --param-value 1
-```
-
-Check.
-
-```bash
-hammer defaults list
 ```
 
 Change domains, environments, and smart proxies to defaults.
