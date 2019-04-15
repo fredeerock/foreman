@@ -24,7 +24,7 @@ sudo nmcli c mod "Wired connection 1" ipv4.method manual ipv4.addr "192.168.33.1
 sudo nmcli c up "Wired connection 1"
 ```
 
-4. Make  needed **variable** edits inside of `master.sh` or `nodes.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, `MASTER_IP`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible.*
+4. Make needed **variable** edits inside of `master.sh` and/or `nodes.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, `MASTER_IP`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible.*
 
 5. Run the shell script.
 
@@ -172,8 +172,8 @@ hammer location list
 Change domains, environments, and smart proxies to defaults.
 
 ```bash
-hammer location update --name "Default Location" --domains "example.com" --environments "production" --smart-proxies "foreman.example.com"
-hammer organization update --name "Default Organization" --domains "example.com" --environments "production" --smart-proxies "foreman.example.com"
+hammer location update --name "Default Location" --domains "example.com" --environments "production" --smart-proxies "foreman.example.com" --media "CentOS mirror"
+hammer organization update --name "Default Organization" --domains "example.com" --environments "production" --smart-proxies "foreman.example.com" --media "CentOS mirror"
 ```
 
 Set defaults using above IDs.

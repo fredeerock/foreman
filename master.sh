@@ -10,7 +10,7 @@ MASTER_IP=192.168.33.10
 LAN_IFACE=eth1
 
 REVERSE_DNS_ZONE=33.168.192.in-addr.arpa
-DHCP_RANGE="192.168.33.101 192.168.33.150"
+DHCP_RANGE="192.168.33.11 192.168.33.110"
 NODE1_HOSTNAME=node1
 NODE1_IP=192.168.33.20
 
@@ -31,7 +31,7 @@ echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
 
 # Firewall
 systemctl start firewalld 
-systemctl enable firewalld
+systemctl enable firewall
 firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https
 firewall-cmd --permanent --add-port=69/tcp
@@ -61,7 +61,7 @@ foreman-installer \
 --foreman-proxy-dhcp-managed=true \
 --foreman-proxy-dhcp-interface=$LAN_IFACE \
 --foreman-proxy-dhcp-gateway=$MASTER_IP \
---foreman-proxy-dhcp-range="192.168.33.101 192.168.33.150" \
+--foreman-proxy-dhcp-range="$DHCP_RANGE" \
 --foreman-proxy-dhcp-nameservers=$MASTER_IP \
 --foreman-proxy-dhcp-server $MASTER_IP \
 --foreman-proxy-dns=true \
