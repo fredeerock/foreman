@@ -182,13 +182,14 @@ Check.
 hammer defaults list
 ```
 
-4. Associate Domain with DNS Proxy
-
-*Use sudo with the below command.*
+Change domains, environments, and smart proxies to defaults.
 
 ```bash
-sudo hammer domain update --name "example.com" --organization "Default Organization" --location "Default Location"
+hammer location update --name "Default Location" --domains "example.com" --environments "production" --smart-proxies "foreman.example.com"
+hammer organization update --name "Default Organization" --domains "example.com" --environments "production" --smart-proxies "foreman.example.com"
 ```
+
+4. Associate Domain with DNS Proxy
 
 ```bash
 hammer domain update --name "example.com" --dns "foreman.example.com"
@@ -226,12 +227,7 @@ hammer os set-default-template --id 1 --config-template-id 30 &&
 hammer os set-default-template --id 1 --config-template-id 14 &&
 hammer os set-default-template --id 1 --config-template-id 37 &&
 hammer os add-ptable --id 1 --partition-table "Kickstart default" &&
-```
-
-For some reason sudo is needed with this last command. Suspect location/organization needs changing via `hammer medium ...`.
-
-```bash
-sudo hammer os update --id 1 --media "CentOS mirror"
+hammer os update --id 1 --media "CentOS mirror"
 ```
 
 7. Create Host Group
@@ -291,8 +287,8 @@ vagrant up
 - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.4-beta 
 
 ## Troubleshooting
+- Putting host IP in for nameserver in /etc/resolv.conf seems to help anisble reach guests using FQDNs.
+- Make sure to supply user and password to ansible.
 
-* Putting host IP in for nameserver in /etc/resolv.conf seems to help anisble reach guests using FQDNs.
-* Also make sure to supply user and password to ansible.
-* Probably should add SSH keys on host creation.
-* If getting `Notice: Run of Puppet configuration client already in progress; skipping (/opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock exists)` try re-running `sudo /opt/puppetlabs/bin/puppet agent --test --debug` on master node. 
+## To Do
+- Probably should add SSH keys on host creation.
