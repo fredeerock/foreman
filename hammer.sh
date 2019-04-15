@@ -17,6 +17,10 @@ echo -e ":foreman:\n\
   :password: '$(sudo awk '/^ *initial_admin_password:/ { print $2 }' /etc/foreman-installer/scenarios.d/foreman-answers.yaml)'" > ~/.hammer/cli_config.yml
 sudo chmod 600 ~/.hammer/cli_config.yml
 
+# Associate medium with OS. Putting this before setting defaults to prevent an error.
+
+hammer os update --id 1 --media "CentOS mirror"
+
 # Change domains, environments, and smart proxies to defaults.
 
 hammer location update --name "Default Location" --domains "$DOMAIN" --environments "production" --smart-proxies "$MASTER_FQDN" --media "CentOS mirror"
@@ -51,7 +55,6 @@ hammer os set-default-template --id 1 --config-template-id 30
 hammer os set-default-template --id 1 --config-template-id 14
 hammer os set-default-template --id 1 --config-template-id 37
 hammer os add-ptable --id 1 --partition-table "Kickstart default"
-hammer os update --id 1 --media "CentOS mirror"
 
 # Create Host Group
 
