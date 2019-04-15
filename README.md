@@ -277,8 +277,8 @@ vagrant up
 4. You may alos choose to do the above step using the command line, but you have to install the hammer discovery plugin `yum install rubygem-hammer_cli_foreman_discovery` and set it up via: https://theforeman.org/plugins/foreman_discovery/4.0/index.html. 
 
 ## References
-- https://theforeman.org/manuals/1.19
-- https://access.redhat.com/documentation/en-us/red_hat_satellite/6.4-beta 
+- https://www.theforeman.org/manuals/1.21/index.html
+- https://access.redhat.com/documentation/en-us/red_hat_satellite/6.4
 
 ## Troubleshooting
 - Putting host IP in for nameserver in /etc/resolv.conf seems to help anisble reach guests using FQDNs.
