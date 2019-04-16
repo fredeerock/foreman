@@ -15,7 +15,7 @@ curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/hammer.sh
 2. Make a note of your LAN interface "device name" and "connection name."
 
 ```bash
-nmcli c s
+nmcli conn show
 ```
 
 3. Use somehting like `nmcli` to create a static ip address for you LAN interface. Replace "Wired connection 1" with the name of your connection from the previous step.
@@ -25,21 +25,24 @@ sudo nmcli c mod "Wired connection 1" ipv4.method manual ipv4.addr "192.168.33.1
 sudo nmcli c up "Wired connection 1"
 ```
 
-4. Make needed **variable** edits inside of `master.sh` and/or `nodes.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, `MASTER_IP`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible.*
-
-5. Run the shell script.
-
-```bash
-chmod 744 master.sh
-sudo ./master.sh
-```
-
-6. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
+4. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. 
 
 ```bash
 ip a
 nmcli con show
 sudo nmcli con mod "System eth0" connection.zone external
+sudo nmcli con up "System eth0"
+```
+
+5. Make needed **variable** edits inside of `master.sh` and/or `hammer.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, `MASTER_IP`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible.*
+
+6. Run the shell script.
+
+```bash
+chmod 744 master.sh
+sudo ./master.sh
+chmod 744 hammer.sh
+sudo ./hammer.sh
 ```
 
 7. A this point you can proceed to the provisioning section to add nodes via PXE booting.
