@@ -9,6 +9,7 @@ The following assumes your master node has an FQDN already being supplied to it 
 
 ```bash
 curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/master.sh
+curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/hammer.sh
 ```
 
 2. Make a note of your LAN interface "device name" and "connection name."
