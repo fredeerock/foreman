@@ -1,11 +1,11 @@
-#!/bin/sh -x
+#!/bin/bash -x
 
 # Variables
 
 DOMAIN=example.com
 MASTER_HOSTNAME=foreman
-MASTER_IP=192.168.33.10
 
+MASTER_IP=192.168.33.10
 MASTER_FQDN=$MASTER_HOSTNAME.$DOMAIN
 
 # Create a Hammer authentication file.
@@ -64,7 +64,7 @@ hammer hostgroup create --name "Base" \
 --operatingsystem "CentOS 7.6.1810" \
 --medium "CentOS mirror" \
 --partition-table "Kickstart default" \
---root-pass "p@55w0rd"
+--root-pass "p@55w0rd!"
 
 # Because of a bug the following actions error out when defaults are set so deleting them.
 
