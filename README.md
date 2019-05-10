@@ -18,23 +18,29 @@ curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/hammer
 nmcli con show
 ```
 
-3. Use somehting like `nmcli` to create a static ip address for you LAN interface. Replace "Wired connection 1" with the name of your connection from the previous step.
+3. Use `nmcli` to create a static ip address for your **LAN** (internal) interface. Replace "enp2s0" with the name of your connection from the previous step.
 
 ```bash
-sudo nmcli c mod "Wired connection 1" ipv4.method manual ipv4.addr "192.168.33.10/24"
-sudo nmcli c up "Wired connection 1"
+sudo nmcli c mod "enp2s0" ipv4.method manual ipv4.addr "192.168.33.10/24"
+sudo nmcli c up "enp2s0"
 ```
 
-4. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. Replace "System eth0" with this connection's name.
+4. Now we need to enable masquearading if you plan to have your nodes connected to Foreman master via LAN. 
+
+Use `nmcli dev show` to find your **WAN** (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. Replace "enp0s21f0u3" with this connection's name.
 
 ```bash
-ip a
-nmcli con show
-sudo nmcli con mod "System eth0" connection.zone external
-sudo nmcli con up "System eth0"
+nmcli dev show
+sudo nmcli con mod "enp0s21f0u3" connection.zone external
+sudo nmcli con up "enp0s21f0u3"
 ```
 
-5. Make needed **variable** edits inside of `master.sh` and/or `hammer.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible in `master.sh`.*
+5. Make any needed **variable** edits inside of `master.sh` and/or `hammer.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible in `master.sh`.*
+
+```bash
+vi master.sh
+vi hammer.sh
+``` 
 
 6. Run the shell script.
 
@@ -95,7 +101,12 @@ git clone https://github.com/fredeerock/foreman-setup
 cd foreman-setup
 ```
 
-5. Make any needed **variable** edits inside of `master.sh`, `hammer.sh` and/or `nodes.sh`. In particular, for `DOMAIN` and `MASTER_HOSTNAME`.
+5. Make any needed **variable** edits inside of `master.sh`, `hammer.sh` and/or `nodes.sh`. Don't have to edit anything if you're using example.com.
+
+```bash
+vi master.sh
+vi hammer.sh
+``` 
 
 6. Boot Foreman Master using Vagrant.
 ```bash
