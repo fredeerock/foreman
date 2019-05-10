@@ -32,18 +32,18 @@ echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
 # Firewall
 systemctl start firewalld 
 systemctl enable firewall
-firewall-cmd --permanent --add-service=http
-firewall-cmd --permanent --add-service=https
-firewall-cmd --permanent --add-port=69/tcp
-firewall-cmd --permanent --add-port=67-69/udp
-firewall-cmd --permanent --add-port=53/tcp
-firewall-cmd --permanent --add-port=53/udp
-firewall-cmd --permanent --add-port=3000/tcp
-firewall-cmd --permanent --add-port=3306/tcp
-firewall-cmd --permanent --add-port=5910-5930/tcp
-firewall-cmd --permanent --add-port=5432/tcp
-firewall-cmd --permanent --add-port=8140/tcp
-firewall-cmd --permanent --add-port=8443/tcp
+firewall-cmd --zone=external --permanent --add-service=http
+firewall-cmd --zone=external --permanent --add-service=https
+firewall-cmd --zone=external --permanent --add-port=69/tcp
+firewall-cmd --zone=external --permanent --add-port=67-69/udp
+firewall-cmd --zone=external --permanent --add-port=53/tcp
+firewall-cmd --zone=external --permanent --add-port=53/udp
+firewall-cmd --zone=external --permanent --add-port=3000/tcp
+firewall-cmd --zone=external --permanent --add-port=3306/tcp
+firewall-cmd --zone=external --permanent --add-port=5910-5930/tcp
+firewall-cmd --zone=external --permanent --add-port=5432/tcp
+firewall-cmd --zone=external --permanent --add-port=8140/tcp
+firewall-cmd --zone=external --permanent --add-port=8443/tcp
 firewall-cmd --reload
 
 # Repositories

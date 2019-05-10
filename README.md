@@ -27,7 +27,7 @@ sudo nmcli c up "enp2s0"
 
 4. Now we need to enable masquearading if you plan to have your nodes connected to Foreman master via LAN. 
 
-Use `nmcli dev show` to find your **WAN** (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. Replace "enp0s21f0u3" with this connection's name.
+Use `nmcli dev show` to find your **WAN** (external) connection name. Look for the connection that does *not* have the ip address `192.168.33.10`. Replace "enp0s21f0u3" with this connection's name.
 
 ```bash
 nmcli dev show
@@ -35,14 +35,14 @@ sudo nmcli con mod "enp0s21f0u3" connection.zone external
 sudo nmcli con up "enp0s21f0u3"
 ```
 
-5. Make any needed **variable** edits inside of `master.sh` and/or `hammer.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible in `master.sh`.*
+5. Make any needed **variable edits** inside of `master.sh` and/or `hammer.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible in `master.sh`.*
 
 ```bash
 vi master.sh
 vi hammer.sh
 ``` 
 
-6. Run the shell script.
+6. Run the shell scripts.
 
 ```bash
 chmod 744 master.sh
