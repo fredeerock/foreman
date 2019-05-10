@@ -8,8 +8,8 @@ The following assumes your master node has an FQDN already being supplied to it 
 1. Download the shell script.
 
 ```bash
-curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/master.sh
-curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/hammer.sh
+curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/master.sh
+curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/hammer.sh
 ```
 
 2. Make a note of your LAN interface "device name" and "connection name."
@@ -48,7 +48,7 @@ sudo ./hammer.sh
 7. Optionally, run the `nodes.sh` shell script on any nodes with CentOS already installed. After downloading the script make sure to change any parameters you wish. In particulare, make sure to comment out the lines that fake DNS, DHCP, and FQDN if you have those running successfully on Foreman master.
 
 ```bash
-curl -O https://raw.githubusercontent.com/fredeerock/foreman/master/nodes.sh
+curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/nodes.sh
 chmod 744 nodes.sh
 sudo ./nodes.sh
 ```
@@ -82,13 +82,17 @@ brew cask install virtualbox
 brew cask install vagrant
 ```
 
-3. Check that VirtualBox  doesn't have any **Host-Only** networks and if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has `192.168.33.10` available.
+3. Check that VirtualBox doesn't have any **Host-Only** networks or if you do have `vboxnet0` already that it uses the default `192.168.33.1` address without DHCP and has `192.168.33.10` available.
+
+```bash
+vboxmanage list hostonlyifs 
+```
 
 4. Clone the repo.
 
 ```bash
-git clone https://github.com/fredeerock/foreman
-cd foreman
+git clone https://github.com/fredeerock/foreman-setup
+cd foreman-setup
 ```
 
 5. Make any needed **variable** edits inside of `master.sh`, `hammer.sh` and/or `nodes.sh`. In particular, for `DOMAIN` and `MASTER_HOSTNAME`.
