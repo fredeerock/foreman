@@ -7,6 +7,7 @@
 DOMAIN=example.com
 MASTER_HOSTNAME=foreman
 LAN_IFACE=eth1
+WAN_IFACE=eth0
 
 MASTER_IP=192.168.33.10
 REVERSE_DNS_ZONE=33.168.192.in-addr.arpa
@@ -16,9 +17,6 @@ NODE1_IP=192.168.33.20
 
 MASTER_FQDN=$MASTER_HOSTNAME.$DOMAIN
 NODE1_FQDN=$NODE1_HOSTNAME.$DOMAIN
-
-# Uncomment if you want to update everything first.
-# yum update -y
 
 # Change the following to you hostname
 hostnamectl set-hostname $MASTER_FQDN
@@ -32,6 +30,8 @@ echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
 # Firewall
 systemctl start firewalld 
 systemctl enable firewall
+firewall-cmd --zone=external --change-interface=$WAN_IFACE
+firewall-cmd --zone=internal --change-interface=$LAN_IFACE
 firewall-cmd --zone=external --permanent --add-service=http
 firewall-cmd --zone=external --permanent --add-service=https
 firewall-cmd --zone=external --permanent --add-port=69/tcp

@@ -2,9 +2,6 @@
 
 # This script is useful for connecting a node already running an OS to Foreman Master. 
 
-# Uncomment if you want to update everything first.
-# sudo yum update -y
-
 # Comment out if Foreman Master has a FQDN.
 echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
 
