@@ -46,6 +46,9 @@ firewall-cmd --zone=external --permanent --add-port=8140/tcp
 firewall-cmd --zone=external --permanent --add-port=8443/tcp
 firewall-cmd --reload
 
+nmcli c mod $LAN_IFACE ipv4.method manual ipv4.addr "$MASTER_IP/24"
+nmcli c up $LAN_IFACE
+
 # Repositories
 yum -y install https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
 yum -y install http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
