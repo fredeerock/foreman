@@ -12,37 +12,20 @@ curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/master
 curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/hammer.sh
 ```
 
-2. Make a note of your LAN interface "device name" and "connection name."
+2. Make a note of your **LAN** and **WAN** interface "device name" for the next step.
 
 ```bash
 nmcli con show
 ```
 
-3. Use `nmcli` to create a static ip address for your **LAN** (internal) interface. Replace "enp2s0" with the name of your connection from the previous step.
-
-```bash
-sudo nmcli c mod "enp2s0" ipv4.method manual ipv4.addr "192.168.33.10/24"
-sudo nmcli c up "enp2s0"
-```
-
-4. Now we need to enable masquearading if you plan to have your nodes connected to Foreman master via LAN. 
-
-Use `nmcli dev show` to find your **WAN** (external) connection name. Look for the connection that does *not* have the ip address `192.168.33.10`. Replace "enp0s21f0u3" with this connection's name.
-
-```bash
-nmcli dev show
-sudo nmcli con mod "enp0s21f0u3" connection.zone external
-sudo nmcli con up "enp0s21f0u3"
-```
-
-5. Make any needed **variable edits** inside of `master.sh` and/or `hammer.sh`. Notably, `DOMAIN`, `MASTER_HOSTNAME`, and `LAN_IFACE`. *Use the device name from step 2 for the `LAN_IFACE` varaible in `master.sh`.*
+3. Make any needed **variable edits** inside of `master.sh` and/or `hammer.sh`. Notably, `WAN_IFACE`, `LAN_IFACE`, `DOMAIN`, and `MASTER_HOSTNAME`
 
 ```bash
 vi master.sh
 vi hammer.sh
 ``` 
 
-6. Run the shell scripts.
+4. Run the shell scripts.
 
 ```bash
 chmod 744 master.sh
@@ -51,7 +34,7 @@ chmod 744 hammer.sh
 sudo ./hammer.sh
 ```
 
-7. Optionally, run the `nodes.sh` shell script on any nodes with CentOS already installed. After downloading the script make sure to change any parameters you wish. In particulare, make sure to comment out the lines that fake DNS, DHCP, and FQDN if you have those running successfully on Foreman master.
+5. Optionally, run the `nodes.sh` shell script on any nodes with CentOS already installed. After downloading the script make sure to change any parameters you wish. In particulare, make sure to comment out the lines that fake DNS, DHCP, and FQDN if you have those running successfully on Foreman master.
 
 ```bash
 curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/nodes.sh
@@ -59,18 +42,18 @@ chmod 744 nodes.sh
 sudo ./nodes.sh
 ```
 
-8. To add nodes via Foreman Discovery, PXE boot a node with DHCP. 
+6. To add nodes via Foreman Discovery, PXE boot a node with DHCP. 
 
-2. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
+7. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
 
-3. Go to foreman.example.com on host machine. 
+8. Go to foreman.example.com on host machine. 
 - If you've forgotten the login username and password check the credentials from `~/.hammer/cli_config.yml` on foreman master. 
 - Navigate to Hosts > Discovered Hosts
 - Click Provision and choose Host Group **Base**.
 - Wait for installation to finish.
 - Once complete you can login with the Host Group password made in step 7 above.
 
-4. You may also choose to do the above step using the command line, but you have to install the hammer discovery plugin `yum install rubygem-hammer_cli_foreman_discovery` and set it up via: https://theforeman.org/plugins/foreman_discovery/4.0/index.html. 
+9. You may also choose to do the above step using the command line, but you have to install the hammer discovery plugin `yum install rubygem-hammer_cli_foreman_discovery` and set it up via: https://theforeman.org/plugins/foreman_discovery/4.0/index.html. 
 
 ## Vagrant
 
@@ -101,7 +84,7 @@ git clone https://github.com/fredeerock/foreman-setup
 cd foreman-setup
 ```
 
-5. Make any needed **variable** edits inside of `master.sh`, `hammer.sh` and/or `nodes.sh`. Don't have to edit anything if you're using example.com.
+5. Make any needed **variable** edits inside of `master.sh`, `hammer.sh` and/or `nodes.sh`. Don't have to edit anything if you're using example.com with Vagrant default interface names.
 
 ```bash
 vi master.sh
@@ -114,15 +97,7 @@ cd master
 vagrant up
 ```
 
-7. SSH into Forman Master and enable masquearading. Use `ip a` and `nmcli con show` to verify WAN (external) connection name. Look for the connection that does **not** have the ip address `192.168.33.10`. Replace "System eth0" with this connection's name.
-
-```bash
-ip a
-nmcli con show
-sudo nmcli con mod "System eth0" connection.zone external
-```
-
-8. If all went well, you should be ready to either PXE boot a blank node or manually add a node to Foreman.
+7. If all went well, you should be ready to either PXE boot a blank node or manually add a node to Foreman.
 
 8. Optionally, boot a CentOS node with static IP to immediately add to Foreman.  
 
@@ -132,23 +107,23 @@ cd node1
 vagrant up
 ```
 
-10. To PXE boot a node with DHCP to provision with Foreman. Run the following back on your host machine. *Make sure private network name (ex: vboxnet0) matchs in Vagrantfile.* 
+9. To PXE boot a node with DHCP to provision with Foreman. Run the following back on your host machine. *Make sure private network name (ex: vboxnet0) matchs in Vagrantfile.* 
 
 ```bash
 cd ..
 cd node2
 vagrant up
 ```
-11. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
+10. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
 
-12. Go to foreman.example.com on host machine. 
+11. Go to foreman.example.com on host machine. 
 - If you've forgotten the login username and password check the credentials from `~/.hammer/cli_config.yml` on foreman master. 
 - Navigate to Hosts > Discovered Hosts
 - Click Provision and choose Host Group **Base**.
 - Wait for installation to finish.
 - Once complete you can login with the Host Group password made in step 7 above.
 
-13. You may also choose to do the above step using the command line, but you have to install the hammer discovery plugin `yum install rubygem-hammer_cli_foreman_discovery` and set it up via: https://theforeman.org/plugins/foreman_discovery/4.0/index.html. 
+12. You may also choose to do the above step using the command line, but you have to install the hammer discovery plugin `yum install rubygem-hammer_cli_foreman_discovery` and set it up via: https://theforeman.org/plugins/foreman_discovery/4.0/index.html. 
 
 ## Manual Provisioning Setup using the WebUI
 
