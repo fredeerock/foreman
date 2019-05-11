@@ -46,6 +46,7 @@ firewall-cmd --zone=external --permanent --add-port=8140/tcp
 firewall-cmd --zone=external --permanent --add-port=8443/tcp
 firewall-cmd --reload
 
+# Set Static IP
 nmcli c mod $LAN_IFACE ipv4.method manual ipv4.addr "$MASTER_IP/24"
 nmcli c up $LAN_IFACE
 
