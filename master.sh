@@ -56,9 +56,11 @@ firewall-cmd --zone=internal --permanent --add-port=9090/tcp
 firewall-cmd --reload
 
 # Set Static IP
-nmcli c up "$LAN_IFACE"
-nmcli c mod "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`" ipv4.method manual ipv4.addr "$MASTER_IP/24"
-nmcli c up "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`"
+nmcli con add type ethernet con-name lan-con ifname "$LAN_IFACE" ip4 "$MASTER_IP/24"
+nmcli con up lan-con
+
+# nmcli con mod "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`" ipv4.method manual ipv4.addr "$MASTER_IP/24"
+# nmcli con up "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`"
 
 # Repositories
 yum -y install https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
