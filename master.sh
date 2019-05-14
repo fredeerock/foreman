@@ -35,21 +35,28 @@ systemctl start firewalld
 systemctl enable firewalld
 firewall-cmd --zone=external --change-interface=$WAN_IFACE
 firewall-cmd --zone=internal --change-interface=$LAN_IFACE
-firewall-cmd --zone=external --permanent --add-service=http
-firewall-cmd --zone=external --permanent --add-service=https
-firewall-cmd --zone=external --permanent --add-port=69/tcp
-firewall-cmd --zone=external --permanent --add-port=67-69/udp
-firewall-cmd --zone=external --permanent --add-port=53/tcp
-firewall-cmd --zone=external --permanent --add-port=53/udp
-firewall-cmd --zone=external --permanent --add-port=3000/tcp
-firewall-cmd --zone=external --permanent --add-port=3306/tcp
-firewall-cmd --zone=external --permanent --add-port=5910-5930/tcp
-firewall-cmd --zone=external --permanent --add-port=5432/tcp
-firewall-cmd --zone=external --permanent --add-port=8140/tcp
-firewall-cmd --zone=external --permanent --add-port=8443/tcp
+firewall-cmd --zone=external --permanent --add-port=80/tcp
+firewall-cmd --zone=external --permanent --add-port=443/tcp
+firewall-cmd --zone=internal --permanent --add-port=53/tcp
+firewall-cmd --zone=internal --permanent --add-port=53/udp
+firewall-cmd --zone=internal --permanent --add-port=67-69/udp
+firewall-cmd --zone=internal --permanent --add-port=69/tcp
+firewall-cmd --zone=internal --permanent --add-port=80/tcp
+firewall-cmd --zone=internal --permanent --add-port=443/tcp
+firewall-cmd --zone=internal --permanent --add-port=3000/tcp
+firewall-cmd --zone=internal --permanent --add-port=3306/tcp
+firewall-cmd --zone=internal --permanent --add-port=5000/tcp
+firewall-cmd --zone=internal --permanent --add-port=5432/tcp
+firewall-cmd --zone=internal --permanent --add-port=5647/tcp
+firewall-cmd --zone=internal --permanent --add-port=5910-5930/tcp
+firewall-cmd --zone=internal --permanent --add-port=8000/tcp
+firewall-cmd --zone=internal --permanent --add-port=8140/tcp
+firewall-cmd --zone=internal --permanent --add-port=8443/tcp
+firewall-cmd --zone=internal --permanent --add-port=9090/tcp
 firewall-cmd --reload
 
 # Set Static IP
+nmcli c up "$LAN_IFACE"
 nmcli c mod "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`" ipv4.method manual ipv4.addr "$MASTER_IP/24"
 nmcli c up "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`"
 

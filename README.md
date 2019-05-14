@@ -17,10 +17,10 @@ curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/master
 curl -O https://raw.githubusercontent.com/fredeerock/foreman-setup/master/hammer.sh
 ```
 
-2. Make a note of your **LAN** and **WAN** interface "device name" for the next step.
+2. Make a note of your **LAN** and **WAN** interface "device name" using `nmcli` for the next step. Press `q` to exit.
 
 ```bash
-nmcli con show
+nmcli
 ```
 
 3. Make any needed **variable edits** inside of `master.sh` and/or `hammer.sh`. Notably, `WAN_IFACE`, `LAN_IFACE`, `DOMAIN`, and `MASTER_HOSTNAME`
@@ -34,8 +34,8 @@ vi hammer.sh
 
 ```bash
 chmod 744 master.sh
-sudo ./master.sh
 chmod 744 hammer.sh
+sudo ./master.sh
 sudo ./hammer.sh
 ```
 
@@ -120,16 +120,22 @@ cd node2
 vagrant up
 ```
 
-10. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
+10. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait (the full 45 seconds) for Foreman Discovery to read "SUCCESS." 
 
-11. Go to foreman.example.com on host machine. 
+11. On Foreman Master install the hammer discovery plugin and run the the provision command below remembering to replace the id number.
+
+```bash
+yum install rubygem-hammer_cli_foreman_discovery
+hammer discovery provision --list
+hammer discovery provision --id 2 --hostgroup Base
+```
+
+12. **Optionally,** you can use the web interface to provion. Go to foreman.example.com on host machine. 
 - If you've forgotten the login username and password check the credentials from `~/.hammer/cli_config.yml` on foreman master. 
 - Navigate to Hosts > Discovered Hosts
 - Click Provision and choose Host Group **Base**.
 - Wait for installation to finish.
 - Once complete you can login with the Host Group password made in step 7 above.
-
-12. You may also choose to do the above step using the command line, but you have to install the hammer discovery plugin `yum install rubygem-hammer_cli_foreman_discovery` and set it up via: https://theforeman.org/plugins/foreman_discovery/4.0/index.html. 
 
 ## Manual Provisioning Setup using the WebUI
 
