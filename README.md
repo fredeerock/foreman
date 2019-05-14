@@ -114,6 +114,7 @@ cd ..
 cd node2
 vagrant up
 ```
+
 10. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
 
 11. Go to foreman.example.com on host machine. 
