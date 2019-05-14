@@ -21,15 +21,18 @@ NODE1_FQDN=$NODE1_HOSTNAME.$DOMAIN
 # Change the following to you hostname
 hostnamectl set-hostname $MASTER_FQDN
 
-# Comment out this line if your host has a FQDN.
-echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
+# Optionally, comment this part out if you have a DNS supplying a FQDN to Foreman Master.
+if [ $DOMAIN = example.com ]
+then
+  echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
+fi
 
 # Uncomment out if not running DHCP or DNS on Foreman Master and want to test a node out.
 # echo "$NODE1_IP $NODE1_FQDN" | tee -a /etc/hosts
 
 # Firewall
 systemctl start firewalld 
-systemctl enable firewall
+systemctl enable firewalld
 firewall-cmd --zone=external --change-interface=$WAN_IFACE
 firewall-cmd --zone=internal --change-interface=$LAN_IFACE
 firewall-cmd --zone=external --permanent --add-service=http
@@ -48,7 +51,7 @@ firewall-cmd --reload
 
 # Set Static IP
 nmcli c mod "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`" ipv4.method manual ipv4.addr "$MASTER_IP/24"
-nmcli c up $LAN_IFACE
+nmcli c up "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`"
 
 # Repositories
 yum -y install https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm

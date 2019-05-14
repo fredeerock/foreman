@@ -3,7 +3,12 @@ The following is a Foreman installation guide running on virtual machines or on 
 
 ## Baremetal
 
-The following assumes your master node has an FQDN already being supplied to it via DNS. It also assumes you have 2 NICs, one attached to a WAN and one attached to a LAN for your internal nodes. 
+The following makes the following assumptions for the master node:
+- An FQDN and IP address being supplied via DNS and DHCP.
+- CentOS Minimal Install
+- 2 NICs one attached to a WAN and one attached to a LAN for your internal nodes
+
+Follow the step below to install Foreman on this master node.
 
 1. Download the shell script.
 
@@ -57,7 +62,7 @@ sudo ./nodes.sh
 
 ## Vagrant
 
-1. If you don't have FQDN on Foreman Master or a test node use the following on your host machine.
+1. If you don't have a FQDN for Foreman Master or a test node use the following on your host machine.
 
 ```bash
 echo "192.168.33.10 foreman.example.com" | sudo tee -a /etc/hosts
@@ -84,7 +89,7 @@ git clone https://github.com/fredeerock/foreman-setup
 cd foreman-setup
 ```
 
-5. Make any needed **variable** edits inside of `master.sh`, `hammer.sh` and/or `nodes.sh`. Don't have to edit anything if you're using example.com with Vagrant default interface names.
+5. Make any needed **variable** edits inside of `master.sh`, `hammer.sh` and/or `nodes.sh`. You don't have to edit anything if you're using example.com with Vagrant default interface names.
 
 ```bash
 vi master.sh
