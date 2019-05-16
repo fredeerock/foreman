@@ -56,14 +56,15 @@ firewall-cmd --zone=internal --permanent --add-port=9090/tcp
 firewall-cmd --reload
 
 # Set Static IP LAN interface and Persistent Firewall Zones
-nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$LAN_IFACE ]; then nmcli c mod $line con-name lan-com; fi; done 
-nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$WAN_IFACE ]; then nmcli c mod $line con-name wan-com; fi; done 
+
+nmcli -g UUID con show | while read line; do if [ `nmcli -g connection.interface-name c s $line` = $LAN_IFACE ]; then nmcli c mod $line con-name lan-con; fi; done
+nmcli -g UUID con show | while read line; do if [ `nmcli -g connection.interface-name c s $line` = $WAN_IFACE ]; then nmcli c mod $line con-name wan-con; fi; done
 
 nmcli c mod lan-con ipv4.method manual ipv4.addr "$MASTER_IP/24" connection.zone "internal"
 nmcli con up lan-con
 
 nmcli c mod wan-con connection.zone "external"
-mcli con up wan-con
+nmcli con up wan-con
 
 # METHOD 1
 # nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$LAN_IFACE ]; then nmcli c mod $line ipv4.method manual ipv4.addr "$MASTER_IP/24"; fi; done 
@@ -76,7 +77,7 @@ mcli con up wan-con
 # nmcli con up wan-con
 
 # Delete unused connection profiles
-# nmcli --fields UUID,DEVICE con show | grep "\-\-" | awk '{print $1}' | while read line; do nmcli con delete uuid $line; done
+nmcli -f UUID,STATE con show | tail -n +2 | grep -v activated | awk '{print $1}' | while read line; do nmcli con delete uuid $line; done
 
 # METHOD 3
 # nmcli con mod "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`" ipv4.method manual ipv4.addr "$MASTER_IP/24"
