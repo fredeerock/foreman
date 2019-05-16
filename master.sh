@@ -56,8 +56,6 @@ firewall-cmd --zone=internal --permanent --add-port=9090/tcp
 firewall-cmd --reload
 
 # Set Static IP LAN interface and make sure zones persist
-# nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$LAN_IFACE ]; then nmcli c mod $line ipv4.method manual ipv4.addr "$MASTER_IP/24"; fi; done 
-
 nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$LAN_IFACE ]; then nmcli c mod $line con-name lan-com; fi; done 
 nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$WAN_IFACE ]; then nmcli c mod $line con-name wan-com; fi; done 
 
@@ -66,6 +64,9 @@ nmcli con up lan-con
 
 nmcli c mod wan-con connection.zone "external"
 mcli con up wan-con
+
+# METHOD 1
+# nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$LAN_IFACE ]; then nmcli c mod $line ipv4.method manual ipv4.addr "$MASTER_IP/24"; fi; done 
 
 # METHOD 2
 # nmcli con add type ethernet con-name lan-con ifname "$LAN_IFACE" ipv4.method manual ipv4.addr "$MASTER_IP/24" connection.zone "internal"
