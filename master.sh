@@ -33,8 +33,8 @@ fi
 # Firewall
 systemctl start firewalld 
 systemctl enable firewalld
-firewall-cmd --zone=external --change-interface=$WAN_IFACE
-firewall-cmd --zone=internal --change-interface=$LAN_IFACE
+# firewall-cmd --zone=external --permanent --change-interface=$WAN_IFACE
+# firewall-cmd --zone=internal --permanent --change-interface=$LAN_IFACE
 firewall-cmd --zone=external --permanent --add-port=80/tcp
 firewall-cmd --zone=external --permanent --add-port=443/tcp
 firewall-cmd --zone=internal --permanent --add-port=53/tcp
@@ -55,9 +55,25 @@ firewall-cmd --zone=internal --permanent --add-port=8443/tcp
 firewall-cmd --zone=internal --permanent --add-port=9090/tcp
 firewall-cmd --reload
 
-# Set Static IP
-nmcli con add type ethernet con-name lan-con ifname "$LAN_IFACE" ip4 "$MASTER_IP/24"
+# Set Static IPs and make sure zones persist
+nmcli con add type ethernet con-name lan-con ifname "$LAN_IFACE" ip4 "$MASTER_IP/24" connection.zone "internal"
 nmcli con up lan-con
+
+nmcli con add type ethernet con-name wan-con ifname "$WAN_IFACE" connection.zone "external"
+nmcli con up wan-con
+
+# Delete unused connection profiles
+nmcli --fields UUID,DEVICE con show | grep "\-\-" | awk '{print $1}' | while read line; do nmcli con delete uuid $line; done
+
+############
+
+nmcli -g UUID con show | while read line; do if [ `nmcli -g connection.interface-name c s $line` = eth1 ]; then echo hi; else echo ho; fi; done
+
+nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | grep eth1; done
+
+nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=eth0 ]; then nmcli c mod $line ipv4.method manual ipv4.addr 192.168.33.21; fi; done 
+
+# nmcli -g connection.interface-name c s "System eth0" | while read line; do echo $line; done
 
 # nmcli con mod "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`" ipv4.method manual ipv4.addr "$MASTER_IP/24"
 # nmcli con up "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`"
