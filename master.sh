@@ -55,7 +55,7 @@ firewall-cmd --zone=internal --permanent --add-port=8443/tcp
 firewall-cmd --zone=internal --permanent --add-port=9090/tcp
 firewall-cmd --reload
 
-# Set Static IP LAN interface and make sure zones persist
+# Set Static IP LAN interface and Persistent Firewall Zones
 nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$LAN_IFACE ]; then nmcli c mod $line con-name lan-com; fi; done 
 nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$WAN_IFACE ]; then nmcli c mod $line con-name wan-com; fi; done 
 
