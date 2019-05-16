@@ -1,14 +1,14 @@
 #!/bin/bash -x
 
-# This script sets up Foreman Master with DHCP, DNS, and PXE. 
-# It assumes a development environment with no FQDN on master or node1. Most commands should be run with sudo. Vagrant does this automatically. If running script manually add sudo to it before running. 
+# This script sets up Foreman Master with DHCP, DNS, and PXE on either baremetal or Vagrant. 
 
-# VARIABLES
+# Variables that likely should be changed if running on baremetal.
 DOMAIN=example.com
 MASTER_HOSTNAME=foreman
 LAN_IFACE=eth1
 WAN_IFACE=eth0
 
+# Variables that likely don't need to be changed.
 MASTER_IP=192.168.33.10
 REVERSE_DNS_ZONE=33.168.192.in-addr.arpa
 DHCP_RANGE="192.168.33.11 192.168.33.110"
@@ -18,25 +18,22 @@ NODE1_IP=192.168.33.20
 MASTER_FQDN=$MASTER_HOSTNAME.$DOMAIN
 NODE1_FQDN=$NODE1_HOSTNAME.$DOMAIN
 
-# Change the following to you hostname
+# Sets hostname based on variables above.
 hostnamectl set-hostname $MASTER_FQDN
 
-# Optionally, comment this part out if you have a DNS supplying a FQDN to Foreman Master.
-if [ $DOMAIN = example.com ]
-then
-  echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
-fi
+# In case you're using example.com presume no DNS so add domain to /etc/hosts.
+if [ $DOMAIN = example.com ]; then echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts; fi
 
-# Uncomment out if not running DHCP or DNS on Foreman Master and want to test a node out.
+# Uncomment if not running DNS on Foreman Master and want to test a node out.
 # echo "$NODE1_IP $NODE1_FQDN" | tee -a /etc/hosts
 
 # Firewall
 systemctl start firewalld 
 systemctl enable firewalld
-# firewall-cmd --zone=external --permanent --change-interface=$WAN_IFACE
-# firewall-cmd --zone=internal --permanent --change-interface=$LAN_IFACE
+
 firewall-cmd --zone=external --permanent --add-port=80/tcp
 firewall-cmd --zone=external --permanent --add-port=443/tcp
+
 firewall-cmd --zone=internal --permanent --add-port=53/tcp
 firewall-cmd --zone=internal --permanent --add-port=53/udp
 firewall-cmd --zone=internal --permanent --add-port=67-69/udp
@@ -65,23 +62,6 @@ nmcli c up lan-con
 
 nmcli c mod wan-con connection.zone "external"
 nmcli c up wan-con
-
-# METHOD 1
-# nmcli -g UUID con show | while read line; do nmcli -g connection.interface-name c s $line | if [ $line=$LAN_IFACE ]; then nmcli c mod $line ipv4.method manual ipv4.addr "$MASTER_IP/24"; fi; done 
-
-# METHOD 2
-# nmcli con add type ethernet con-name lan-con ifname "$LAN_IFACE" ipv4.method manual ipv4.addr "$MASTER_IP/24" connection.zone "internal"
-# nmcli con up lan-con
-
-# nmcli con add type ethernet con-name wan-con ifname "$WAN_IFACE" connection.zone "external"
-# nmcli con up wan-con
-
-# Delete unused connection profiles
-# nmcli -f UUID,STATE con show | tail -n +2 | grep -v activated | awk '{print $1}' | while read line; do nmcli con delete uuid $line; done
-
-# METHOD 3
-# nmcli con mod "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`" ipv4.method manual ipv4.addr "$MASTER_IP/24"
-# nmcli con up "`nmcli -g GENERAL.CONNECTION dev show "$LAN_IFACE"`"
 
 # Repositories
 yum -y install https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm

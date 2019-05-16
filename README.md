@@ -102,40 +102,40 @@ cd master
 vagrant up
 ```
 
-7. If all went well, you should be ready to either PXE boot a blank node or manually add a node to Foreman.
+7. If all went well, you should be ready to either PXE boot a blank node or manually add a node to Foreman. Take a note of the initial credentials output to you.
 
-8. Optionally, boot a CentOS node with static IP to immediately add to Foreman.  
-
-```bash
-cd ..
-cd node1
-vagrant up
-```
-
-9. To PXE boot a node with DHCP to provision with Foreman. Run the following back on your host machine. *Make sure private network name (ex: vboxnet0) matchs in Vagrantfile.* 
+8. To **PXE boot** a node with DHCP and have provisioned by Foreman run the following back on your host machine. 
 
 ```bash
 cd ..
-cd node2
+cd node-pxe
 vagrant up
 ```
 
-10. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait (the full 45 seconds) for Foreman Discovery to read "SUCCESS." 
+9. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait (the full 45 seconds) for Foreman Discovery to read "SUCCESS." 
 
-11. On Foreman Master install the hammer discovery plugin and run the the provision command below remembering to replace the id number. For some reason the root password from the host group doesn't work. You can set a new one here.
+10. On Foreman Master install the hammer discovery plugin and run the the provision command below remembering to replace the id number. For some reason the root password from the host group doesn't work. You can set a new one here.
 
 ```bash
-yum install rubygem-hammer_cli_foreman_discovery
-hammer discovery provision --list
-hammer discovery provision --id 2 --hostgroup Base --root-password change_me!!!
+yum install -y tfm-rubygem-hammer_cli_foreman_discovery
+hammer discovery list
+hammer discovery provision --id 2 --hostgroup Base --root-password change_me
 ```
 
-12. **Optionally,** you can use the web interface to provion. Go to foreman.example.com on host machine. 
+11. **Optionally,** you may use the web interface to provision. Go to foreman.example.com on host machine. 
 - If you've forgotten the login username and password check the credentials from `~/.hammer/cli_config.yml` on foreman master. 
 - Navigate to Hosts > Discovered Hosts
 - Click Provision and choose Host Group **Base**.
 - Wait for installation to finish.
 - Once complete you can login with the Host Group password made in step 7 above.
+
+12. **Optioanlly,** manually add a CentOS node to Foreman.  
+
+```bash
+cd ..
+cd node-manual
+vagrant up
+```
 
 ## Manual Provisioning Setup using the WebUI
 
