@@ -58,6 +58,9 @@ nmcli -g UUID c show | while read line; do if [ `nmcli -g connection.interface-n
 
 # Set Static IP LAN interface and Persistent Firewall Zones
 nmcli c mod lan-con ipv4.method manual ipv4.addr "$MASTER_IP/24" connection.zone "public"
+
+# Also set DNS to self so Foreman can find nodes
+nmcli c mod lan-con +ipv4.dns 192.168.33.10 ipv4.dns-priority 1
 nmcli c up lan-con
 
 nmcli c mod wan-con connection.zone "external"
