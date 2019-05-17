@@ -114,12 +114,21 @@ vagrant up
 
 9. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait (the full 45 seconds) for Foreman Discovery to read "SUCCESS." 
 
-10. On Foreman Master install the hammer discovery plugin and run the the provision command below remembering to replace the id number. For some reason the root password from the host group doesn't work. You can set a new one here.
+10. On Foreman Master install the hammer discovery plugin and run the the provision command below with root (`sudo -i`)remembering to replace the id number. For some reason the root password from the host group doesn't work. You can set a new one here (maybe this doesn't work either?).
 
 ```bash
 yum install -y tfm-rubygem-hammer_cli_foreman_discovery
 hammer discovery list
-hammer discovery provision --id 2 --hostgroup Base --root-password change_me
+hammer user list
+hammer hostgroup list
+hammer discovery provision --id 2 --owner-id 4 --hostgroup Base --root-pass changeme516
+```
+
+- Can set default provision root pass with...
+
+```bash
+ENCPASS="$(python -c 'import crypt,getpass;pw=getpass.getpass(); print(crypt.crypt(pw,crypt.mksalt(crypt.METHOD_SHA256))) if (pw==getpass.getpass("Confirm: ")) else exit()')"
+hammer settings set --name root_pass --value "$ENCPASS"
 ```
 
 11. **Optionally,** you may use the web interface to provision. Go to foreman.example.com on host machine. 
@@ -190,4 +199,4 @@ Instead of running the `hammer.sh` script in the **Baremetal** or **Vagrant** se
 - Make sure to supply user and password to ansible.
 
 ## To Do
-- Probably should add SSH keys on host creation.
+- Probably should add SSH keys on host creation (https://access.redhat.com/documentation/en-us/red_hat_satellite/6.5/html/provisioning_guide/provisioning_bare_metal_hosts#Configuring_Provisioning_Resources-Creating_Provisioning_Templates-Deploying_SSH_Keys_during_Provisioning). 

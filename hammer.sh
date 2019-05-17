@@ -64,7 +64,7 @@ hammer hostgroup create --name "Base" \
 --operatingsystem "CentOS 7.6.1810" \
 --medium "CentOS mirror" \
 --partition-table "Kickstart default" \
---root-pass "p@55w0rd!"
+--root-pass "changeme517"
 
 # Because of a bug the following actions error out when defaults are set so deleting them.
 
@@ -78,3 +78,8 @@ hammer os update --id 1 --media "CentOS mirror"
 # Build PXE Defaults
 
 hammer template build-pxe-default
+
+# Put back defaults for future commands
+
+hammer defaults add --param-name organization_id --param-value 2
+hammer defaults add --param-name location_id --param-value 1

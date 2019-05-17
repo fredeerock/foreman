@@ -34,22 +34,22 @@ systemctl enable firewalld
 firewall-cmd --zone=external --permanent --add-port=80/tcp
 firewall-cmd --zone=external --permanent --add-port=443/tcp
 
-firewall-cmd --zone=internal --permanent --add-port=53/tcp
-firewall-cmd --zone=internal --permanent --add-port=53/udp
-firewall-cmd --zone=internal --permanent --add-port=67-69/udp
-firewall-cmd --zone=internal --permanent --add-port=69/tcp
-firewall-cmd --zone=internal --permanent --add-port=80/tcp
-firewall-cmd --zone=internal --permanent --add-port=443/tcp
-firewall-cmd --zone=internal --permanent --add-port=3000/tcp
-firewall-cmd --zone=internal --permanent --add-port=3306/tcp
-firewall-cmd --zone=internal --permanent --add-port=5000/tcp
-firewall-cmd --zone=internal --permanent --add-port=5432/tcp
-firewall-cmd --zone=internal --permanent --add-port=5647/tcp
-firewall-cmd --zone=internal --permanent --add-port=5910-5930/tcp
-firewall-cmd --zone=internal --permanent --add-port=8000/tcp
-firewall-cmd --zone=internal --permanent --add-port=8140/tcp
-firewall-cmd --zone=internal --permanent --add-port=8443/tcp
-firewall-cmd --zone=internal --permanent --add-port=9090/tcp
+firewall-cmd --zone=public --permanent --add-port=53/tcp
+firewall-cmd --zone=public --permanent --add-port=53/udp
+firewall-cmd --zone=public --permanent --add-port=67-69/udp
+firewall-cmd --zone=public --permanent --add-port=69/tcp
+firewall-cmd --zone=public --permanent --add-port=80/tcp
+firewall-cmd --zone=public --permanent --add-port=443/tcp
+firewall-cmd --zone=public --permanent --add-port=3000/tcp
+firewall-cmd --zone=public --permanent --add-port=3306/tcp
+firewall-cmd --zone=public --permanent --add-port=5000/tcp
+firewall-cmd --zone=public --permanent --add-port=5432/tcp
+firewall-cmd --zone=public --permanent --add-port=5647/tcp
+firewall-cmd --zone=public --permanent --add-port=5910-5930/tcp
+firewall-cmd --zone=public --permanent --add-port=8000/tcp
+firewall-cmd --zone=public --permanent --add-port=8140/tcp
+firewall-cmd --zone=public --permanent --add-port=8443/tcp
+firewall-cmd --zone=public --permanent --add-port=9090/tcp
 firewall-cmd --reload
 
 # Rename NetworkManager Connections
@@ -57,7 +57,7 @@ nmcli -g UUID c show | while read line; do if [ `nmcli -g connection.interface-n
 nmcli -g UUID c show | while read line; do if [ `nmcli -g connection.interface-name c s $line` = $WAN_IFACE ]; then nmcli c mod $line con-name wan-con; fi; done
 
 # Set Static IP LAN interface and Persistent Firewall Zones
-nmcli c mod lan-con ipv4.method manual ipv4.addr "$MASTER_IP/24" connection.zone "internal"
+nmcli c mod lan-con ipv4.method manual ipv4.addr "$MASTER_IP/24" connection.zone "public"
 nmcli c up lan-con
 
 nmcli c mod wan-con connection.zone "external"
