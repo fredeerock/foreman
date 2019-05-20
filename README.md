@@ -114,7 +114,7 @@ vagrant up
 
 9. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait (the full 45 seconds) for Foreman Discovery to read "SUCCESS." 
 
-10. On Foreman Master install the hammer discovery plugin and run the the provision command below with root (`sudo -i`)remembering to replace the id number. For some reason the root password from the host group doesn't work. You can set a new one here (maybe this doesn't work either?).
+10. On Foreman Master install the hammer discovery plugin and run the the provision command below with root (`sudo -i`)remembering to replace the id number.
 
 ```bash
 yum install -y tfm-rubygem-hammer_cli_foreman_discovery

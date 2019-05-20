@@ -53,8 +53,8 @@ firewall-cmd --zone=public --permanent --add-port=9090/tcp
 firewall-cmd --reload
 
 # Rename NetworkManager Connections
-nmcli -g UUID c show | while read line; do if [ `nmcli -g connection.interface-name c s $line` = $LAN_IFACE ]; then nmcli c mod $line con-name lan-con; fi; done
-nmcli -g UUID c show | while read line; do if [ `nmcli -g connection.interface-name c s $line` = $WAN_IFACE ]; then nmcli c mod $line con-name wan-con; fi; done
+nmcli -g UUID c show | while read line; do if [ "`nmcli -g GENERAL.DEVICES c s $line`" = "$LAN_IFACE" ]; then nmcli c mod $line con-name lan-con; fi; done
+nmcli -g UUID c show | while read line; do if [ "`nmcli -g GENERAL.DEVICES c s $line`" = "$WAN_IFACE" ]; then nmcli c mod $line con-name wan-con; fi; done
 
 # Set Static IP LAN interface and Persistent Firewall Zones
 nmcli c mod lan-con ipv4.method manual ipv4.addr "$MASTER_IP/24" connection.zone "public"
