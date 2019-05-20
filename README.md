@@ -121,7 +121,7 @@ yum install -y tfm-rubygem-hammer_cli_foreman_discovery
 hammer discovery list
 hammer user list
 hammer hostgroup list
-hammer discovery provision --id 5 --owner-id 4 --hostgroup Base --location-title "Default Location" --organization-title "Default Organization" --ask-root-password
+hammer discovery provision --id 5 --owner-id 4 --hostgroup Base --location-title "Default Location" --organization-title "Default Organization" --ask-root-password yes --build yes
 ```
 
 - Can set default provision root pass with SHA256 if you don't want to pass one like above. 
