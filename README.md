@@ -51,14 +51,15 @@ sudo ./nodes.sh
 
 7. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait for Foreman Discovery to read "SUCCESS." 
 
-8. Go to foreman.example.com on host machine. 
-- If you've forgotten the login username and password check the credentials from `~/.hammer/cli_config.yml` on foreman master. 
-- Navigate to Hosts > Discovered Hosts
-- Click Provision and choose Host Group **Base**.
-- Wait for installation to finish.
-- Once complete you can login with the Host Group password made in step 7 above.
+8. On Foreman Master install the hammer discovery plugin and run the the provision command below with root (`sudo -i`)remembering to replace the id number.
 
-9. You may also choose to do the above step using the command line, but you have to install the hammer discovery plugin `yum install rubygem-hammer_cli_foreman_discovery` and set it up via: https://theforeman.org/plugins/foreman_discovery/4.0/index.html. 
+```bash
+yum install -y tfm-rubygem-hammer_cli_foreman_discovery
+hammer discovery list
+hammer user list
+hammer hostgroup list
+hammer discovery provision --id 2 --owner-id 4 --hostgroup Base --location-title "Default Location" --organization-title "Default Organization" --ask-root-password yes --build yes
+```
 
 ## Vagrant
 
@@ -122,13 +123,6 @@ hammer discovery list
 hammer user list
 hammer hostgroup list
 hammer discovery provision --id 2 --owner-id 4 --hostgroup Base --location-title "Default Location" --organization-title "Default Organization" --ask-root-password yes --build yes
-```
-
-- Can set default provision root pass with SHA256 if you don't want to pass one like above. 
-
-```bash
-ENCPASS="$(python -c 'import crypt,getpass;pw=getpass.getpass(); print(crypt.crypt(pw,crypt.mksalt(crypt.METHOD_SHA256))) if (pw==getpass.getpass("Confirm: ")) else exit()')"
-hammer settings set --name root_pass --value "$ENCPASS"
 ```
 
 11. **Optionally,** you may use the web interface to provision. Go to foreman.example.com on host machine. 
@@ -195,8 +189,14 @@ Instead of running the `hammer.sh` script in the **Baremetal** or **Vagrant** se
 - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.4
 
 ## Troubleshooting
-- Putting host IP in for nameserver in /etc/resolv.conf seems to help anisble reach guests using FQDNs.
-- Make sure to supply user and password to ansible.
+- May need to supply user and password to ansible.
 
 ## To Do
-- Probably should add SSH keys on host creation (https://access.redhat.com/documentation/en-us/red_hat_satellite/6.5/html/provisioning_guide/provisioning_bare_metal_hosts#Configuring_Provisioning_Resources-Creating_Provisioning_Templates-Deploying_SSH_Keys_during_Provisioning). 
+- Image based creation isn't injecting users
+- Figure out how to add SSH keys on host creation (https://access.redhat.com/documentation/en-us/red_hat_satellite/6.5/html/provisioning_guide/provisioning_bare_metal_hosts#Configuring_Provisioning_Resources-Creating_Provisioning_Templates-Deploying_SSH_Keys_during_Provisioning). 
+- Would also be nice to be able to set default provision root pass with SHA256 if you don't want to pass one like above. *Note: This isn't working for some reason.*
+
+```bash
+ENCPASS="$(python -c 'import crypt,getpass;pw=getpass.getpass(); print(crypt.crypt(pw,crypt.mksalt(crypt.METHOD_SHA256))) if (pw==getpass.getpass("Confirm: ")) else exit()')"
+hammer settings set --name root_pass --value "$ENCPASS"
+```
