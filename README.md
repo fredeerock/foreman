@@ -203,4 +203,30 @@ hammer settings set --name root_pass --value "$ENCPASS"
 
 ## Plugins worth considering
 - Docker: `foreman-installer -–enable-foreman-plugin-docker`
+- Libvirt `foreman-installer --enable-foreman-compute-libvirt`
 
+## Notes on Creating a KVM Compute Resource and Host on Foreman Master
+
+On Foreman Master login and switch to root
+
+```bash
+sudo -i
+```
+
+Create SSH keys and install libvirt.
+
+```bash
+su foreman -s /bin/bash
+ssh-keygen
+ssh-copy-id root@kvm.example.com
+exit
+yum install -y qemu-kvm libvirt virt-install libvirt-python virt-manager virt-install libvirt-client
+systemctl start libvirtd
+systemctl enable libvirtd
+```
+
+Test your connection with the below. Should get a blank table.
+
+```bash
+su foreman -s /bin/bash -c 'virsh -c qemu+ssh://root@kvm.example.com/system list'
+```

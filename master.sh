@@ -24,8 +24,11 @@ set -e
 # Sets hostname based on variables above.
 hostnamectl set-hostname $MASTER_FQDN
 
-# In case you're using example.com presume no DNS so add domain to /etc/hosts.
-if [ $DOMAIN = example.com ]; then echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts; fi
+# Set internal network to same hostname as external network
+echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts
+
+# MAYBE NOT NEEDED: In case you're using example.com presume no DNS so add domain to /etc/hosts.
+# if [ $DOMAIN = example.com ]; then echo "$MASTER_IP $MASTER_FQDN" | tee -a /etc/hosts; fi
 
 # Uncomment if not running DNS on Foreman Master and want to test a node out.
 # echo "$NODE1_IP $NODE1_FQDN" | tee -a /etc/hosts
