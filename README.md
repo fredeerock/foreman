@@ -203,9 +203,14 @@ hammer settings set --name root_pass --value "$ENCPASS"
 
 ## Plugins worth considering
 - Docker: `foreman-installer -–enable-foreman-plugin-docker`
-- Libvirt `foreman-installer --enable-foreman-compute-libvirt`
 
 ## Notes on Creating a KVM Compute Resource and Host on Foreman Master
+
+Install libvirt compute.
+
+```bash
+foreman-installer --enable-foreman-compute-libvirt`
+```
 
 On Foreman Master login and switch to root
 
