@@ -7,13 +7,8 @@ MASTER_HOSTNAME=foreman
 MASTER_IP=192.168.33.10
 MASTER_FQDN=$MASTER_HOSTNAME.$DOMAIN
 
-# exit when any command fails
+# Exit if any commands fail
 set -e
-
-# keep track of the last executed command
-trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
-# echo an error message before exiting
-trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 
 # Create a Hammer authentication file.
 mkdir .hammer
