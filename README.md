@@ -229,7 +229,7 @@ su foreman -s /bin/bash
 ssh-keygen
 ssh-copy-id root@kvm.example.com
 exit
-yum install -y qemu-kvm libvirt virt-install libvirt-python virt-manager virt-install libvirt-client
+yum install -y qemu-kvm libvirt virt-install libvirt-python virt-manager virt-install libvirt-client libguestfs-tools
 systemctl start libvirtd
 systemctl enable libvirtd
 ```
@@ -239,3 +239,7 @@ Test your connection with the below. Should get a blank table.
 ```bash
 su foreman -s /bin/bash -c 'virsh -c qemu+ssh://root@kvm.example.com/system list'
 ```
+
+Change file: vi /etc/libvirt/qemu.conf 
+  `#user = root  -> user = root`
+  `#group = "root" - > group = "root"` 
