@@ -33,8 +33,8 @@ vi hammer.sh
 4. Run the shell scripts with sudo.
 
 ```bash
-chmod 744 master.sh
-chmod 744 hammer.sh
+chmod +x master.sh
+chmod +x hammer.sh
 sudo ./master.sh
 sudo ./hammer.sh
 ```
