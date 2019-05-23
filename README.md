@@ -206,6 +206,10 @@ hammer settings set --name root_pass --value "$ENCPASS"
 
 ## Notes on Creating a KVM Compute Resource and Host on Foreman Master
 
+References:
+- https://theforeman.org/manuals/1.21/index.html#5.2.5LibvirtNotes
+- https://access.redhat.com/documentation/en-us/red_hat_satellite/6.5/html/provisioning_guide/provisioning_virtual_machines_in_kvm
+
 Install libvirt compute.
 
 ```bash
