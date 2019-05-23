@@ -30,7 +30,7 @@ vi master.sh
 vi hammer.sh
 ``` 
 
-4. Run the shell scripts.
+4. Run the shell scripts with sudo.
 
 ```bash
 chmod 744 master.sh
