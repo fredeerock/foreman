@@ -98,8 +98,9 @@ foreman-installer \
 --enable-foreman-proxy-plugin-discovery \
 --foreman-proxy-plugin-discovery-install-images=true \
 --enable-foreman-plugin-remote-execution \
---enable-foreman-proxy-plugin-remote-execution-ssh
-# -–enable-foreman-plugin-docker
+--enable-foreman-proxy-plugin-remote-execution-ssh \
+--enable-foreman-plugin-cockpit
+# -–enable-foreman-plugin-docker # this is breaking the install currently.
 
 # Initialize Node
 while [ -f /opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock ]

@@ -200,3 +200,7 @@ Instead of running the `hammer.sh` script in the **Baremetal** or **Vagrant** se
 ENCPASS="$(python -c 'import crypt,getpass;pw=getpass.getpass(); print(crypt.crypt(pw,crypt.mksalt(crypt.METHOD_SHA256))) if (pw==getpass.getpass("Confirm: ")) else exit()')"
 hammer settings set --name root_pass --value "$ENCPASS"
 ```
+
+## Plugins worth considering
+- Docker: `foreman-installer -–enable-foreman-plugin-docker`
+
