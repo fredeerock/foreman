@@ -193,6 +193,7 @@ Instead of running the `hammer.sh` script in the **Baremetal** or **Vagrant** se
 
 ## To Do
 - Image based creation isn't injecting users
+- Associate Kickstart user data template with OS. Maybe this fixes above.
 - Figure out how to add SSH keys on host creation (https://access.redhat.com/documentation/en-us/red_hat_satellite/6.5/html/provisioning_guide/provisioning_bare_metal_hosts#Configuring_Provisioning_Resources-Creating_Provisioning_Templates-Deploying_SSH_Keys_during_Provisioning). 
 - Would also be nice to be able to set default provision root pass with SHA256 if you don't want to pass one like above. *Note: This isn't working for some reason.*
 
@@ -207,6 +208,7 @@ hammer settings set --name root_pass --value "$ENCPASS"
 ## Notes on Creating a KVM Compute Resource and Host on Foreman Master
 
 References:
+- https://theforeman.org/manuals/1.21/index.html#4.3.11Libvirt
 - https://theforeman.org/manuals/1.21/index.html#5.2.5LibvirtNotes
 - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.5/html/provisioning_guide/provisioning_virtual_machines_in_kvm
 
@@ -243,3 +245,10 @@ su foreman -s /bin/bash -c 'virsh -c qemu+ssh://root@kvm.example.com/system list
 Change file: vi /etc/libvirt/qemu.conf 
   `#user = root  -> user = root`
   `#group = "root" - > group = "root"` 
+
+  Find password for virt-manager: 
+  
+  ```bash
+  virsh list
+  virsh dumpxml <vm-id/name> --security-info
+  ```

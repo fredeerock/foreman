@@ -96,7 +96,7 @@ foreman-installer \
 --foreman-proxy-dns-zone=$DOMAIN \
 --foreman-proxy-dns-reverse=$REVERSE_DNS_ZONE \
 --foreman-proxy-dns-forwarders="8.8.8.8; 1.1.1.1" \
---foreman-proxy-dns-server $MASTER_IP \
+--foreman-proxy-dns-server $MASTER_IP \ #do these need equal signs?
 --puppet-autosign-entries="*.$DOMAIN" \
 --enable-foreman-plugin-ansible \
 --enable-foreman-proxy-plugin-ansible \
