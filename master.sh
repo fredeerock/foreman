@@ -80,33 +80,35 @@ yum -y install https://yum.theforeman.org/releases/1.21/el7/x86_64/foreman-relea
 # Install Foreman
 yum -y install foreman-installer
 foreman-installer \
---foreman-proxy-tftp=true \
---foreman-proxy-tftp-managed=true \
---foreman-proxy-tftp-servername=$MASTER_IP \
---foreman-proxy-dhcp=true \
---foreman-proxy-dhcp-managed=true \
---foreman-proxy-dhcp-interface=$LAN_IFACE \
---foreman-proxy-dhcp-gateway=$MASTER_IP \
---foreman-proxy-dhcp-range="$DHCP_RANGE" \
---foreman-proxy-dhcp-nameservers=$MASTER_IP \
+--foreman-proxy-tftp true \
+--foreman-proxy-tftp-managed true \
+--foreman-proxy-tftp-servername $MASTER_IP \
+--foreman-proxy-dhcp true \
+--foreman-proxy-dhcp-managed true \
+--foreman-proxy-dhcp-interface $LAN_IFACE \
+--foreman-proxy-dhcp-gateway $MASTER_IP \
+--foreman-proxy-dhcp-range "$DHCP_RANGE" \
+--foreman-proxy-dhcp-nameservers $MASTER_IP \
 --foreman-proxy-dhcp-server $MASTER_IP \
---foreman-proxy-dns=true \
---foreman-proxy-dns-managed=true \
---foreman-proxy-dns-interface=$LAN_IFACE \
---foreman-proxy-dns-zone=$DOMAIN \
---foreman-proxy-dns-reverse=$REVERSE_DNS_ZONE \
---foreman-proxy-dns-forwarders="8.8.8.8; 1.1.1.1" \
---foreman-proxy-dns-server $MASTER_IP \ #do these need equal signs?
---puppet-autosign-entries="*.$DOMAIN" \
---enable-foreman-plugin-ansible \
---enable-foreman-proxy-plugin-ansible \
+--foreman-proxy-dns true \
+--foreman-proxy-dns-managed true \
+--foreman-proxy-dns-interface $LAN_IFACE \
+--foreman-proxy-dns-zone $DOMAIN \
+--foreman-proxy-dns-reverse $REVERSE_DNS_ZONE \
+--foreman-proxy-dns-forwarders "8.8.8.8; 1.1.1.1" \
+--foreman-proxy-dns-server $MASTER_IP \
+--puppet-autosign-entries "*.$DOMAIN" \
 --enable-foreman-plugin-discovery \
 --enable-foreman-proxy-plugin-discovery \
---foreman-proxy-plugin-discovery-install-images=true \
+--foreman-proxy-plugin-discovery-install-images true \
 --enable-foreman-plugin-remote-execution \
 --enable-foreman-proxy-plugin-remote-execution-ssh \
---enable-foreman-plugin-cockpit
-# -–enable-foreman-plugin-docker # this is breaking the install currently.
+--enable-foreman-plugin-cockpit \
+--enable-foreman-plugin-ansible \
+--enable-foreman-proxy-plugin-ansible
+# -–enable-foreman-plugin-docker
+
+# Docker breaks things and ansible takes a long time to install. Commenting out for now.
 
 # Initialize Node
 while [ -f /opt/puppetlabs/puppet/cache/state/agent_catalog_run.lock ]

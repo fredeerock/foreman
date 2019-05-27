@@ -184,6 +184,10 @@ Instead of running the `hammer.sh` script in the **Baremetal** or **Vagrant** se
       - Root Pass: changeme
 9. **Hosts > Provisioning Templates > Build PXE Default**
 
+## Plugins worth installing after
+Docker breaks if included.
+- Docker: `foreman-installer -–enable-foreman-plugin-docker`
+
 ## References
 - https://www.theforeman.org/manuals/1.21/index.html
 - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.4
@@ -201,9 +205,6 @@ Instead of running the `hammer.sh` script in the **Baremetal** or **Vagrant** se
 ENCPASS="$(python -c 'import crypt,getpass;pw=getpass.getpass(); print(crypt.crypt(pw,crypt.mksalt(crypt.METHOD_SHA256))) if (pw==getpass.getpass("Confirm: ")) else exit()')"
 hammer settings set --name root_pass --value "$ENCPASS"
 ```
-
-## Plugins worth considering
-- Docker: `foreman-installer -–enable-foreman-plugin-docker`
 
 ## Notes on Creating a KVM Compute Resource and Host on Foreman Master
 
