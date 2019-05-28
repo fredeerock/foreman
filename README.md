@@ -115,7 +115,7 @@ vagrant up
 
 9. Choose **Foreman Discovery Image** from the VirtualBox window. Then wait (the full 45 seconds) for Foreman Discovery to read "SUCCESS." 
 
-10. On Foreman Master install the hammer discovery plugin and run the the provision command below with root (`sudo -i`)remembering to replace the id number.
+10. On Foreman Master install the hammer discovery plugin and run the the provision command below with root (`sudo -i`)remembering to replace the id number. Leave out the --build yes part if you want to do an image based install.
 
 ```bash
 yum install -y tfm-rubygem-hammer_cli_foreman_discovery
@@ -140,8 +140,14 @@ cd node-manual
 vagrant up
 ```
 
-## Manual Provisioning Setup using the WebUI
+## SSH Keys
+1. Clone Kickstart Default template
+2. Add `<%= snippet('create_users') %>` to **Kickstart Default** provisioning template in the post section just before the **sync** funtion.
+3. Associate tempalte with OS
+4. Go to Hosts > Operating Systems > Templates > Choose cloned template.
+- For more see: https://access.redhat.com/documentation/en-us/red_hat_satellite/6.5/html-single/provisioning_guide/index#Configuring_Provisioning_Resources-Creating_Provisioning_Templates-Deploying_SSH_Keys_during_Provisioning
 
+## Manual Provisioning Setup using the WebUI
 Instead of running the `hammer.sh` script in the **Baremetal** or **Vagrant** sections above you may choose to setup Foreman using the WebUI with the below commands. 
 
 1. Login to Foreman WebUI with url and credentials given at end of install.
@@ -192,19 +198,9 @@ Docker breaks if included.
 - https://www.theforeman.org/manuals/1.21/index.html
 - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.4
 
-## Troubleshooting
-- May need to supply user and password to ansible.
-
 ## To Do
-- Image based creation isn't injecting users
-- Associate Kickstart user data template with OS. Maybe this fixes above.
-- Figure out how to add SSH keys on host creation (https://access.redhat.com/documentation/en-us/red_hat_satellite/6.5/html/provisioning_guide/provisioning_bare_metal_hosts#Configuring_Provisioning_Resources-Creating_Provisioning_Templates-Deploying_SSH_Keys_during_Provisioning). 
-- Would also be nice to be able to set default provision root pass with SHA256 if you don't want to pass one like above. *Note: This isn't working for some reason.*
-
-```bash
-ENCPASS="$(python -c 'import crypt,getpass;pw=getpass.getpass(); print(crypt.crypt(pw,crypt.mksalt(crypt.METHOD_SHA256))) if (pw==getpass.getpass("Confirm: ")) else exit()')"
-hammer settings set --name root_pass --value "$ENCPASS"
-```
+- [ ] Image based creation isn't injecting SSH keys
+- [ ] Create KVM 
 
 ## Notes on Creating a KVM Compute Resource and Host on Foreman Master
 

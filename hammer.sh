@@ -43,10 +43,12 @@ hammer os add-config-template --id 1 --config-template "Kickstart default"
 hammer os add-config-template --id 1 --config-template "Kickstart default finish"
 hammer os add-config-template --id 1 --config-template "Kickstart default PXELinux"
 hammer os add-config-template --id 1 --config-template "Kickstart default iPXE"
+hammer os add-config-template --id 1 --config-template "Kickstart default user data"
 hammer os set-default-template --id 1 --config-template-id 47
 hammer os set-default-template --id 1 --config-template-id 30
 hammer os set-default-template --id 1 --config-template-id 14
 hammer os set-default-template --id 1 --config-template-id 37
+hammer os set-default-template --id 1 --config-template-id 89
 hammer os add-ptable --id 1 --partition-table "Kickstart default"
 
 # Create Host Group
